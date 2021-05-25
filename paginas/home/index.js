@@ -6,7 +6,7 @@ export default function Cliente() {
   return (
       <View>
           <Text>
-            Vista Cliente
+            Vista de Home
           </Text>
       </View>
   )

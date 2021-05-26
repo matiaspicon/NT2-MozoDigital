@@ -7,12 +7,12 @@ export default function Index({ navigation }) {
   console.log('NAVIGATION INDEX:', navigation)
 
   function buscaMenu() {
-    const f = fetch("http://localhost:3000/api/menu");
+    const f = fetch("http://localhost:3000/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0");
     return f
       .then((res) => res.json())
       .then((json_extraido) => {
         console.log("Platos: ", json_extraido);
-        setMenu(json_extraido);
+        setMenu(json_extraido.menu);
       })
       .catch((error) => console.log("Fallo:" + error));
   }

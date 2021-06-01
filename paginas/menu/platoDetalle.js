@@ -11,10 +11,12 @@ import {
 } from "react-native";
 
 import Contador from "../../components/contador/contador";
+import { agregarCarritoItem, listadoCarritoItem } from "../carrito/carrito-crud";
+import Carrito from "../carrito/carrito";
 
 export default function DetallePlato({ navigation, route }) {
   //console.log("ROUTE:", route);
-  const { categoria, descripcion, habilitado, precio, titulo, url_imagen } =
+  const { _id, categoria, descripcion, habilitado, precio, titulo, url_imagen } =
     route.params.plato;
 
   const [cantidad, setCantidad] = useState(1);
@@ -36,7 +38,7 @@ export default function DetallePlato({ navigation, route }) {
 
             <Text style={styles.categoria}>{categoria}</Text>
             <Text style={styles.descripcion}>{descripcion}</Text>
-            <Text style={styles.precio}> $ {precio}</Text>
+            <Text style={styles.precio}> ${precio}</Text>
 
             <Contador
               cantidad={cantidad}
@@ -44,7 +46,17 @@ export default function DetallePlato({ navigation, route }) {
               disminuirCantidad={() => disminuirCantidad()}
             />
 
-            <TouchableOpacity style={styles.buttonAddItem}>
+            <TouchableOpacity style={styles.buttonAddItem}
+            //onPress = {console.log("Presionaste el boton")}>
+            onPress={()=> 
+              {
+                //const carritoItem = {_id: _id, cantidad: cantidad};
+                const carritoItem = {...route.params.plato, cantidad: cantidad};
+                console.log("PLATO CARRITO ITEM: ", carritoItem);
+                agregarCarritoItem(carritoItem);
+                navigation.navigate("Menu");
+                //navigation.push("Menu");
+              }}>
               <Text style={styles.addTitle}>
                 Agregar item(s) {convertirAPesos(precio * cantidad)}
               </Text>

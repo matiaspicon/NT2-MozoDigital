@@ -2,6 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import Menu from "./index";
 import DetallesPlato from "./platoDetalle";
+import Carrito from "../carrito/index";
 
 const MenuStack = createStackNavigator();
 

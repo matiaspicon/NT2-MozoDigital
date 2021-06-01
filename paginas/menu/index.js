@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, TextInput } from "react-native";
 import Menu from "./menu";
 
 export default function Index({ navigation }) {
   const [platos, setMenu] = useState([]);
+  const [filtro, setFiltro] = useState("");
+  
   console.log('NAVIGATION INDEX:', navigation)
 
   function buscaMenu() {
@@ -12,7 +14,9 @@ export default function Index({ navigation }) {
       .then((res) => res.json())
       .then((json_extraido) => {
         console.log("Platos: ", json_extraido);
-        setMenu(json_extraido.menu);
+        setMenu(json_extraido.menu
+          .filter(plato => plato.titulo.toLowerCase().includes(filtro.toLowerCase()))
+        );
       })
       .catch((error) => console.log("Fallo:" + error));
   }
@@ -21,9 +25,25 @@ export default function Index({ navigation }) {
     buscaMenu();
   }, []);
 
+  useEffect(()=> {
+    buscaMenu()
+  },[filtro]);
+
+  const cambiaFiltro = (filtro) => {
+    setFiltro(filtro)
+  }
+
   return (
-    <ScrollView>
-      <Menu navigation={navigation} platos={platos} />
-    </ScrollView>
+    <>
+      <TextInput
+        placeholder = "Buscar"
+        value = {filtro}
+        style = {{ height: 30, borderWidth: 2, borderColor:'white', marginHorizontal: 0 }}
+        onChangeText = {(text) => cambiaFiltro(text)}
+      />
+      <ScrollView> 
+        <Menu navigation={navigation} platos={platos} />
+      </ScrollView>
+    </>
   );
 }

@@ -5,6 +5,7 @@ import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
 import Home from "./paginas/home/index";
 import Menu from "./paginas/menu/menuStack";
 import Cliente from "./paginas/cliente/index";
+import Carrito from "./paginas/carrito/index";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -28,6 +29,9 @@ export default function App() {
             if (route.name === "Cliente") {
               iconName = "user";
             }
+            if (route.name === "Carrito") {
+              iconName = "shopping-cart";
+            }
 
             return (
               <Icon
@@ -49,7 +53,8 @@ export default function App() {
       >
         <miStack.Screen name="Home" component={Home} />
         <miStack.Screen name="Menu" component={Menu} />
-        <miStack.Screen name="Cliente" component={Cliente} />                
+        <miStack.Screen name="Cliente" component={Cliente} />
+        <miStack.Screen name="Carrito" component={Carrito} />                    
       </miStack.Navigator>
     </NavigationContainer>
   );

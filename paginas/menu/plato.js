@@ -6,6 +6,7 @@ import {
   Image,
   TouchableHighlight,
   Button,
+  TouchableOpacity
 } from "react-native";
 
 export default function Plato({ navigation, plato }) {
@@ -13,7 +14,7 @@ export default function Plato({ navigation, plato }) {
   //console.log("PLATO:", plato);
 
   return (
-    <TouchableHighlight
+    <TouchableOpacity
       onPress={() => navigation.push("Detalles Plato", { plato: plato })}
     >
       <View style={styles.platoContainer}>
@@ -24,18 +25,18 @@ export default function Plato({ navigation, plato }) {
           />
         </View>
         <View style={styles.platoDescripcionContainer}>
-          <Text style={{ fontWeight: "bold" }}>{plato.titulo}</Text>
-          <Text style={{ fontWeight: "bold" }}>${plato.precio}</Text>
+          <Text style={styles.platoDescripcion}>{plato.titulo}</Text>
+          <Text style={styles.platoDescripcion}>${plato.precio}</Text>
         </View>
       </View>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   platoContainer: {
-    height: 190,
-    width: 220,
+    height: 150,
+    width: 160,
     marginHorizontal: 10,
     marginBottom: 20,
     marginTop: 50,
@@ -49,16 +50,20 @@ const styles = StyleSheet.create({
   },
   platoImagenContainer: {
     alignItems: "center",
-    top: -20,
+    top: -30,
   },
   platoImagen: {
-    height: 150,
-    width: 150,
-    borderRadius: 80,
+    height: 120,
+    width: 130,
+    borderRadius: 60,
   },
   platoDescripcionContainer: {
     alignItems: "center",
     marginHorizontal: 20,
-    top: -10,
+    top: -20,
   },
+  platoDescripcion: {
+    fontWeight: "bold",
+    fontSize: 12.5
+  }
 });

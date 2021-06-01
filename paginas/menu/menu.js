@@ -5,7 +5,7 @@ import Plato from "./plato";
 export default function Menu({ navigation, platos }) {
   //console.log("NAVIGATION MENU:", navigation);
   return (
-    <View style={{ flex: 1, flexDirection: "row", flexWrap: "wrap"}}>
+    <View style={{ flex: 1, flexDirection: "row", flexWrap: "wrap", alignContent: "space-around", justifyContent: "center" }}>
       {platos &&
         platos.map((plato, index) => (
           <View key={index}>

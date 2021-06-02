@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext, useReducer } from "react";
 import {
   View,
   Text,
@@ -11,19 +11,21 @@ import {
 } from "react-native";
 
 import Contador from "../../components/contador/contador";
-import { agregarCarritoItem, listadoCarritoItem } from "../carrito/carrito-crud";
-import Carrito from "../carrito/carrito";
+
+import GlobalContext from '../../components/global/context'
+
 
 export default function DetallePlato({ navigation, route }) {
   //console.log("ROUTE:", route);
   const { _id, categoria, descripcion, habilitado, precio, titulo, url_imagen } =
     route.params.plato;
-
   const [cantidad, setCantidad] = useState(1);
 
+  const context = useContext(GlobalContext)
+
   useEffect(() => {
-    //console.log("Cambio cantidad" + cantidad);
-  }, [cantidad]);
+    console.log("State dentro de Detalle plato", context);
+}, [])
 
   return (
     <ScrollView style={{ flex: 1, flexDirection: "column" }}>
@@ -42,21 +44,13 @@ export default function DetallePlato({ navigation, route }) {
 
             <Contador
               cantidad={cantidad}
-              aumentarCantidad={() => aumentarCantidad()}
-              disminuirCantidad={() => disminuirCantidad()}
+              cambiarCantidad={setCantidad}
+              aumentarCantidad={() => setCantidad(cantidad+1)}
+              disminuirCantidad={() => setCantidad(cantidad-1)}
             />
 
             <TouchableOpacity style={styles.buttonAddItem}
-            //onPress = {console.log("Presionaste el boton")}>
-            onPress={()=> 
-              {
-                //const carritoItem = {_id: _id, cantidad: cantidad};
-                const carritoItem = {...route.params.plato, cantidad: cantidad};
-                console.log("PLATO CARRITO ITEM: ", carritoItem);
-                agregarCarritoItem(carritoItem);
-                navigation.navigate("Menu");
-                //navigation.push("Menu");
-              }}>
+            onPress={()=> agregarCarritoItem({...route.params.plato, cantidad: cantidad})}>
               <Text style={styles.addTitle}>
                 Agregar item(s) {convertirAPesos(precio * cantidad)}
               </Text>
@@ -67,19 +61,34 @@ export default function DetallePlato({ navigation, route }) {
     </ScrollView>
   );
 
-  function aumentarCantidad() {
-    //console.log("Cantidad antes:", cantidad);    
-    setCantidad(cantidad + 1);     
-    setTimeout(console.log("Cantidad despues:", cantidad), 0);
+
+  function agregarCarritoItem(carritoItem){
+    //const carritoItem = {_id: _id, cantidad: cantidad};
+    //console.log("PLATO CARRITO ITEM: ", carritoItem);
+    if(context.carritoItems.find((itemFind)=> itemFind._id == carritoItem._id)){
+      let contextCopia = {...context};
+      contextCopia.carritoItems.find((itemFind)=> itemFind._id == carritoItem._id).cantidad += cantidad;
+      context.setData(contextCopia);
+    }else{
+      context.setData({...context, carritoItems: [...context.carritoItems, carritoItem]})
+    }
+    navigation.navigate("Menu");
+    //navigation.push("Menu");
   }
 
-  function disminuirCantidad() {
-    if (cantidad > 1) {
-      {
-        setCantidad(cantidad - 1 );
-      }
-    }
-  }
+  // function aumentarCantidad() {
+  //   //console.log("Cantidad antes:", cantidad);    
+  //   setCantidad(cantidad + 1);     
+  //   setTimeout(console.log("Cantidad despues:", cantidad), 0);
+  // }
+
+  // function disminuirCantidad() {
+  //   if (cantidad > 1) {
+  //     {
+  //       setCantidad(cantidad - 1 );
+  //     }
+  //   }
+  // }
 
   function convertirAPesos(total) {
     return "$" + total.toLocaleString("de-DE");

@@ -23,7 +23,7 @@ export default function Contador(props) {
         size="20"
         disabled= {!habilitado}
         disabledStyle= {{ color: '#E83232' }}
-        onPress={() => props.disminuirCantidad()            
+        onPress={() => props.cambiarCantidad(props.cantidad - 1)            
     }
       />
       <Text style={styles.cantidad}>{props.cantidad}</Text>
@@ -32,7 +32,7 @@ export default function Contador(props) {
         name="plus"
         type="font-awesome"
         size="20"
-        onPress={() => props.aumentarCantidad()}
+        onPress={() => props.cambiarCantidad(props.cantidad + 1)}
       />
     </View>
   );

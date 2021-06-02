@@ -1,28 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer, useContext } from "react";
 import {SafeAreaView, StyleSheet, View, Text, Image, Button } from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { agregarCarritoItem, listadoCarritoItem, carritoItems, devolverTotal } from "./carrito-crud";
 import Menu from "../menu/index";
 import Contador from "../../components/contador/contador";
 
-export default function Carrito({ navigation, route }) {
-  //console.log("NAVIGATION MENU:", navigation);
+import { data, reducer } from "../../services/global/useReduce";
 
-  const [cantidad, setCantidad] = useState(1);
+import GlobalContext from "../../components/global/context"
+
+
+export default function Carrito({ navigation, route }) {
+
+  const [state, dispatch] = useReducer(reducer, data);
+
+  const context = useContext(GlobalContext)
 
   useEffect(() => {
-    //console.log("Cambio cantidad" + cantidad);
-  }, [cantidad]);
-
-  let [items, setItems] = useState([...carritoItems]);
-
-  const [count, setCount] = useState(0);
-  const onPress = () => setItems([...carritoItems]);
-
+      console.log("State dentro de Carrito: ",context);
+  }, [])
   
+  function devolverTotal() {
+    let total = 0;
+    context.carritoItems.forEach(carritoItem => {
+      total = total + (carritoItem.precio * carritoItem.cantidad);
+    });
+    return total;
+  }
+
+
   const CartCard = ({item}) => {
+    const cambiarCantidad = function(cantidad){
+      let contextCopia = {...context};
+      contextCopia.carritoItems.find((itemFind)=> itemFind._id == item._id).cantidad = cantidad;
+      context.setData(contextCopia);
+    }
+
     return (
+
       <View style={style.cartCard}>
         <Image source={item.url_imagen} style={{height: 80, width: 80}} />
         <View
@@ -37,8 +52,9 @@ export default function Carrito({ navigation, route }) {
           <View style={{ flex: 1, flexDirection: 'row', alignContent: 'space-arround'}}>
               <Contador 
               cantidad={item.cantidad}
-              aumentarCantidad={() => {item.cantidad = item.cantidad + 1; onPress()}}
-              disminuirCantidad={() => {item.cantidad = item.cantidad - 1; onPress()}}
+              cambiarCantidad={cambiarCantidad}
+              // aumentarCantidad={() => context.setData({...context, carritoItems: [...context.carritoItems,{...item, cantidad: item.cantidad+1}]})}
+              // disminuirCantidad={() => context.setData({...context, carritoItems: [...context.carritoItems,{...item, cantidad: item.cantidad-1}]})}
             />
             </View>
         </View>
@@ -53,7 +69,7 @@ export default function Carrito({ navigation, route }) {
       <FlatList
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 80}}
-        data={carritoItems}
+        data={context.carritoItems}
         renderItem={({item}) => <CartCard item={item} />}
         ListFooterComponentStyle={{paddingHorizontal: 20, marginTop: 20}}
         ListFooterComponent={() => (

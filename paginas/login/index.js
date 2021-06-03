@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Input } from "react-native-elements";
 
-export default function Cliente({navigation}) {
+export default function Cliente({ navigation }) {
   const [credenciales, setCredenciales] = useState();
 
   function login() {
@@ -26,14 +26,21 @@ export default function Cliente({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ marginVertical: 40, marginHorizontal: 20 , flex: 1, justifyContent: 'center', }}>
+      <View
+        style={{
+          marginVertical: 40,
+          marginHorizontal: 20,
+          flex: 1,
+          justifyContent: "center",
+        }}
+      >
         <Input
           placeholder="Email"
           leftIcon={
             <Icon type="font-awesome" name="envelope" size={20} color="grey" />
           }
           style={styles}
-          onChangeText={(value) => this.setState({ comment: value })}
+          onChangeText={(value) => setState({ comment: value })}
         />
 
         <Input
@@ -45,7 +52,10 @@ export default function Cliente({navigation}) {
           onChangeText={(value) => this.setState({ comment: value })}
         />
 
-        <TouchableOpacity style={styles.ingresarBtn} onPress={() => navigation.navigate("AppCliente")}>
+        <TouchableOpacity
+          style={styles.ingresarBtn}
+          onPress={() => navigation.navigate("AppCliente")}
+        >
           <Text style={styles.addTitle}>Ingresar</Text>
         </TouchableOpacity>
       </View>

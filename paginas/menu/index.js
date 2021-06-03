@@ -42,7 +42,7 @@ export default function Index({ navigation }) {
     <>
       <SearchBar
         placeholder="Buscar"
-        onChangeText={(text) => cambiaFiltro(text)}
+        onChangeText={(text) => setFiltro(text)}
         value={filtro}
         round="true"
       />

@@ -63,32 +63,18 @@ export default function DetallePlato({ navigation, route }) {
 
 
   function agregarCarritoItem(carritoItem){
-    //const carritoItem = {_id: _id, cantidad: cantidad};
-    //console.log("PLATO CARRITO ITEM: ", carritoItem);
+ 
     if(context.carritoItems.find((itemFind)=> itemFind._id == carritoItem._id)){
-      let contextCopia = {...context};
-      contextCopia.carritoItems.find((itemFind)=> itemFind._id == carritoItem._id).cantidad += cantidad;
-      context.setData(contextCopia);
+      let carritoPivot = [...context.carritoItems]
+      carritoPivot.find((itemFind)=> itemFind._id == carritoItem._id).cantidad += carritoItem.cantidad
+      context.setCarritoItems(carritoPivot);
     }else{
-      context.setData({...context, carritoItems: [...context.carritoItems, carritoItem]})
+      context.setCarritoItems([...context.carritoItems, carritoItem])
     }
+
     navigation.navigate("Menu");
     //navigation.push("Menu");
   }
-
-  // function aumentarCantidad() {
-  //   //console.log("Cantidad antes:", cantidad);    
-  //   setCantidad(cantidad + 1);     
-  //   setTimeout(console.log("Cantidad despues:", cantidad), 0);
-  // }
-
-  // function disminuirCantidad() {
-  //   if (cantidad > 1) {
-  //     {
-  //       setCantidad(cantidad - 1 );
-  //     }
-  //   }
-  // }
 
   function convertirAPesos(total) {
     return "$" + total.toLocaleString("de-DE");

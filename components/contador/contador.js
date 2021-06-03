@@ -20,7 +20,7 @@ export default function Contador(props) {
         style={styles.icon}
         name="minus"
         type="font-awesome"
-        size="20"
+        size={20}
         disabled= {!habilitado}
         disabledStyle= {{ color: '#E83232' }}
         onPress={() => props.cambiarCantidad(props.cantidad - 1)            
@@ -31,7 +31,7 @@ export default function Contador(props) {
         style={styles.icon}
         name="plus"
         type="font-awesome"
-        size="20"
+        size={20}
         onPress={() => props.cambiarCantidad(props.cantidad + 1)}
       />
     </View>

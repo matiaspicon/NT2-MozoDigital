@@ -39,7 +39,7 @@ export default function Carrito({ navigation, route }) {
     return (
 
       <View style={style.cartCard}>
-        <Image source={item.url_imagen} style={{height: 80, width: 80}} />
+        <Image source={{uri: item.url_imagen}} style={{height: 80, width: 80}} />
         <View
           style={{
             height: 100,

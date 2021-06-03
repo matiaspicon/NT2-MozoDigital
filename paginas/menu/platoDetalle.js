@@ -31,7 +31,7 @@ export default function DetallePlato({ navigation, route }) {
     <ScrollView style={{ flex: 1, flexDirection: "column" }}>
       <View style={styles.platoDetallesContainer}>
         <View>
-          <Image source={url_imagen} style={styles.imagen} />
+          <Image source={{uri: url_imagen}} style={styles.imagen} />
         </View>
 
         <View style={styles.platoDetails}>

@@ -9,7 +9,9 @@ export default function Index({ navigation }) {
 
   console.log("LISTADO PEDIDOS:", navigation);
 
-  function buscaMenu() {
+  function buscarPedidos() {
+    let i = 0;
+    console.log("BUSCO PEDIDOS 1", i++);
     const f = fetch("https://gentle-hamlet-44521.herokuapp.com/api/pedidos");
     return f
       .then((res) => res.json())
@@ -25,11 +27,12 @@ export default function Index({ navigation }) {
   }
 
   useEffect(() => {
-    buscaMenu();
+    //buscarPedidos();
+    setInterval(buscarPedidos, 10000);
   }, []);
 
   useEffect(() => {
-    buscaMenu();
+    buscarPedidos();
   }, [filtro]);
 
   const cambiaFiltro = (filtro) => {
@@ -38,18 +41,17 @@ export default function Index({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Text>PANTALLA DE PEDIDOS</Text>
-        <SearchBar
-          placeholder="Buscar"
-          //onChangeText={(text) => cambiaFiltro(text)}
-          //value={filtro}
-          round="true"
-        />
-        <ScrollView>
+      <Text>PANTALLA DE PEDIDOS</Text>
+      <SearchBar
+        placeholder="Buscar"
+        //onChangeText={(text) => cambiaFiltro(text)}
+        //value={filtro}
+        round="true"
+      />
+
+      <ScrollView>
         <Pedidos navigation={navigation} pedidos={pedidos} />
-        </ScrollView>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

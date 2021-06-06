@@ -9,10 +9,23 @@ import {
   Button,
   ScrollView,
 } from "react-native";
+import { Badge } from "react-native-elements";
 
 import Contador from "../../components/contador/contador";
 
 import GlobalContext from "../../components/global/context";
+
+let badge;
+
+function badgeStatus(estado) {
+  if (estado == "En Preparacion") {
+    badge = "warning";
+  }
+  if (estado == "Terminado") {
+    badge = "success";
+  }
+  return badge;
+}
 
 export default function DetallePlato({ navigation, route }) {
   console.log("ROUTE PEDIDO DETALLE:", route);
@@ -39,7 +52,13 @@ export default function DetallePlato({ navigation, route }) {
 
         <View style={styles.pedidosCard}>
           <Text style={styles.pedidoLabel}>Estado: </Text>
-          <Text>{estado}</Text>
+          <Badge
+            status={badgeStatus(estado)}
+            value={estado}
+            badgeStyle={{
+              paddingHorizontal: 10,
+            }}
+          />
         </View>
 
         <View style={styles.pedidosCard}>
@@ -55,7 +74,7 @@ export default function DetallePlato({ navigation, route }) {
 
         <View style={styles.pedidosCard}>
           <Text style={styles.pedidoLabel}>Total: $ </Text>
-          {/* <Text></Text> ACA VA EL TOTAL DEL PEDIDO*/ }
+          {/* <Text></Text> ACA VA EL TOTAL DEL PEDIDO*/}
         </View>
       </View>
     </ScrollView>

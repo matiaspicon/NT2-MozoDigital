@@ -1,11 +1,24 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { Badge } from "react-native-elements";
 import DetallesPedido from "./detallePedido";
+
+let badge;
+
+function badgeStatus(pedido) {
+  if (pedido.estado == "En Preparacion") {
+    badge = "warning";
+  }
+  if (pedido.estado == "Terminado") {
+    badge = "success";
+  }
+  return badge;
+}
 
 export default function Pedidos({ navigation, pedidos }) {
   console.log("NAVIGATION PEDIDOS:", navigation);
   return (
-    <View>
+    <View style={styles.container}>
       {pedidos &&
         pedidos.map((pedido, index) => (
           <TouchableOpacity
@@ -23,9 +36,16 @@ export default function Pedidos({ navigation, pedidos }) {
                   <Text>{pedido.cliente}</Text>
                 </View>
 
-                <View style={styles.pedidosCard}>
+                <View style={styles.badgeRow}>
                   <Text style={styles.pedidoLabel}>Estado: </Text>
-                  <Text>{pedido.estado}</Text>
+
+                  <Badge
+                    status={badgeStatus(pedido)}
+                    value={pedido.estado}
+                    badgeStyle={{
+                      paddingHorizontal: 10,
+                    }}
+                  />
                 </View>
 
                 <View style={styles.pedidosCard}>
@@ -42,7 +62,8 @@ export default function Pedidos({ navigation, pedidos }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
+    //paddingBottom: 10
   },
   pedidosContainer: {
     //elevation: 15,
@@ -66,6 +87,11 @@ const styles = StyleSheet.create({
   pedidosCard: {
     flexDirection: "row",
     padding: 10,
+  },
+  badgeRow: {
+    flexDirection: "row",
+    padding: 10,
+    alignItems: "center",
   },
   pedidoLabel: {
     fontWeight: "bold",

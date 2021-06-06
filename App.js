@@ -5,6 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { StyleSheet, SafeAreaView, Text, View, Button, ScrollView } from "react-native";
 import Login from "./paginas/login/index";
 import AppCliente from "./paginas/app";
+import Encargado from "./paginas/encargado/index";
 import { NavigationContainer } from "@react-navigation/native";
 import GlobalContext from "./components/global/context";
 
@@ -39,6 +40,7 @@ export default function App() {
           <loginStack.Navigator screenOptions={{headerShown: false}}>
             <loginStack.Screen name="Login" component={Login} />
             <loginStack.Screen name="AppCliente" component={AppCliente} />
+            <loginStack.Screen name="Encargado" component={Encargado} />
           </loginStack.Navigator>
         </NavigationContainer>      
     </GlobalContext.Provider>

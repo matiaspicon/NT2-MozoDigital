@@ -5,7 +5,7 @@ import {
   View,
   Text,
   Image,
-  Button,
+  TouchableOpacity,
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -37,7 +37,7 @@ export default function Carrito({ navigation, route }) {
     context.carritoItems.forEach((carritoItem) => {
       total = total + carritoItem.precio * carritoItem.cantidad;
     });
-    return total;
+    return total.toLocaleString("de-DE");
   }
 
   const CartCard = ({ item }) => {
@@ -49,10 +49,10 @@ export default function Carrito({ navigation, route }) {
     };
 
     return (
-      <View style={style.cartCard}>
+      <View style={styles.cartCard}>
         <Image
           source={{ uri: item.url_imagen }}
-          style={{ height: 80, width: 80 }}
+          style={{ height: 80, width: 80, borderRadius: 10 }}
         />
         <View
           style={{
@@ -60,22 +60,33 @@ export default function Carrito({ navigation, route }) {
             marginLeft: 10,
             paddingVertical: 20,
             flex: 1,
+            flexDirection: "row",
           }}
         >
-          <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-            {item.titulo}
-          </Text>
-          <Text style={{ fontSize: 17, fontWeight: "bold" }}>
-            ${item.precio}
-          </Text>
+          <View styles={{ justifyContent: "flex-end" }}>
+            <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+              {item.titulo}
+            </Text>
+            <Text
+              style={{
+                fontSize: 17,
+                fontStyle: "italic",
+                fontWeight: "bold",
+                marginTop: 20,
+              }}
+            >
+              ${item.precio}
+            </Text>
+          </View>
+
           <View
             style={{
-              flex: 1,
-              flexDirection: "row",
-              alignContent: "space-arround",
+              justifyContent: "flex-end",
+              marginLeft: "auto",
             }}
           >
             <Contador
+              style={{ marginTop: 20 }}
               cantidad={item.cantidad}
               cambiarCantidad={cambiarCantidad}
               // aumentarCantidad={() => context.setData({...context, carritoItems: [...context.carritoItems,{...item, cantidad: item.cantidad+1}]})}
@@ -86,9 +97,10 @@ export default function Carrito({ navigation, route }) {
       </View>
     );
   };
+
   return (
     <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
-      <View style={style.header}>
+      <View style={styles.header}>
         <Text style={{ fontSize: 18, fontWeight: "500" }}>Carrito</Text>
       </View>
       <FlatList
@@ -111,9 +123,13 @@ export default function Carrito({ navigation, route }) {
                 ${devolverTotal()}
               </Text>
             </View>
-            <View style={{ marginHorizontal: 30 }}>
-              <Button title="Realizar pedido" onPress={submitPedido} />
-            </View>
+
+            <TouchableOpacity
+              style={styles.realizarPedidoBtn}
+              onPress={submitPedido}
+            >
+              <Text style={styles.realizarPedidoTitle}>Realizar pedido</Text>
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -121,7 +137,7 @@ export default function Carrito({ navigation, route }) {
   );
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   header: {
     paddingVertical: 20,
     flexDirection: "row",
@@ -138,6 +154,15 @@ const style = StyleSheet.create({
     paddingHorizontal: 10,
     flexDirection: "row",
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   actionBtn: {
     width: 80,
@@ -148,5 +173,17 @@ const style = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignContent: "center",
+  },
+  realizarPedidoBtn: {
+    alignItems: "center",
+    backgroundColor: "#EE3D3D",
+    borderRadius: 40,
+    padding: 8,
+    marginHorizontal: 30,
+  },
+  realizarPedidoTitle: {
+    color: "#ffffff",
+    fontWeight: "600",
+    fontSize: 16,
   },
 });

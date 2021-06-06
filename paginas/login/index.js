@@ -10,18 +10,31 @@ import {
 } from "react-native";
 import { Input } from "react-native-elements";
 
-export default function Cliente({ navigation }) {
-  const [credenciales, setCredenciales] = useState();
+export default function Cliente({ navigation }) {  
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
 
-  function login() {
-    const loginRequest = fetch("http://localhost:3000/api/usuarios/login");
-    return loginRequest
-      .then((res) => res.json())
+  function validarLogin() {
+    fetch("https://gentle-hamlet-44521.herokuapp.com/api/usuarios/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        //email: email, //-->NO BORRAR 
+        //password: password, //-->NO BORRAR 
+        email: "admin@mozodigital.com", //email HARDCODEADO
+        password: "1234",               //password HARDCODEADO
+      }),
+    })
+      .then((response) => response.json())
       .then((respuestaJson) => {
-        console.log("Totek: ", respuestaJson);
-        setCredenciales(respuestaJson);
+        console.log(respuestaJson);        
+        return respuestaJson;
       })
-      .catch((error) => console.log("Fallo:" + error));
+      .catch((error) => {
+        console.error(error);
+      });
+
+      navigation.navigate("Encargado")
   }
 
   return (
@@ -40,7 +53,7 @@ export default function Cliente({ navigation }) {
             <Icon type="font-awesome" name="envelope" size={20} color="grey" />
           }
           style={styles}
-          onChangeText={(value) => setState({ comment: value })}
+          onChangeText={(email) => setEmail(email)}
         />
 
         <Input
@@ -49,7 +62,7 @@ export default function Cliente({ navigation }) {
             <Icon type="font-awesome" name="lock" size={30} color="grey" />
           }
           style={styles}
-          onChangeText={(value) => this.setState({ comment: value })}
+          onChangeText={(password) => setPassword(password)}
         />
 
         <TouchableOpacity
@@ -57,6 +70,13 @@ export default function Cliente({ navigation }) {
           onPress={() => navigation.navigate("AppCliente")}
         >
           <Text style={styles.addTitle}>Ingresar</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.ingresarBtn}
+          onPress={() => validarLogin()}
+        >
+          <Text style={styles.addTitle}>Validar Usuario</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext, useReducer } from "react";
 import {
   View,
   Text,
+  TextInput,
+  CheckBox,
   Image,
   TouchableOpacity,
   TouchableHighlight,
@@ -9,9 +11,8 @@ import {
   Button,
   ScrollView,
 } from "react-native";
-
+import axios from "axios";
 import Contador from "../../components/contador/contador";
-
 import GlobalContext from "../../components/global/context";
 
 export default function DetallePlato({ navigation, route }) {
@@ -27,13 +28,22 @@ export default function DetallePlato({ navigation, route }) {
   } = route.params.plato;
   const [cantidad, setCantidad] = useState(1);
 
+  const [url_imagenMod, setUrl_imagenMod] = useState(url_imagen);
+  const [tituloMod, setTituloMod] = useState(titulo);
+  const [categoriaMod, setCategoriaMod] = useState(categoria);
+  const [descripcionMod, setDescripcionMod] = useState(descripcion);
+  const [precioMod, setPrecioMod] = useState(precio);
+  const [habilitadoMod, setHabilitadoMod] = useState(habilitado);
+
   const context = useContext(GlobalContext);
 
-  useEffect(() => {
+  /*useEffect(() => {
     console.log("State dentro de Detalle plato", context);
   }, []);
+  */
 
-  return (
+  if(context.user.rol != "Admin") {       
+    return (
     <ScrollView style={{ flex: 1, flexDirection: "column" }}>
       <View style={styles.platoDetallesContainer}>
         <View>
@@ -74,7 +84,79 @@ export default function DetallePlato({ navigation, route }) {
         </View>
       </View>
     </ScrollView>
-  );
+
+  )} else {
+
+    return (   
+    <ScrollView style={{ flex: 1, flexDirection: "column" }}>
+      <View style={styles.platoDetallesContainer}>
+        <View>
+          <Image source={{ uri: url_imagen }} style={styles.imagen} />
+        </View>
+
+        <View style={styles.platoDetails}>
+          <View styles={styles.detalle}>
+
+            <TextInput 
+            style={styles.titulo}
+            onChangeText={setTituloMod}
+            value={tituloMod}
+            />
+
+            <TextInput
+            style={styles.categoria}
+            onChangeText={setCategoriaMod}
+            value={categoriaMod}
+            />
+
+            <TextInput 
+            style={styles.url_imagenMod}
+            onChangeText={setUrl_imagenMod}
+            value={url_imagenMod}
+            adjustsFontSizeToFit={true}
+            />
+
+            <TextInput 
+            style={styles.descripcion}
+            onChangeText={setDescripcionMod}
+            value={descripcionMod}
+            />
+
+
+            <Text style={styles.precio}>$ 
+            <TextInput 
+            style={styles.precioMod}
+            onChangeText={setPrecioMod}
+            value={precioMod}
+            />
+            </Text>
+
+            <Text
+            style={styles.descripcion}> Habilitado:  
+            <CheckBox
+            style={styles.checkbox}
+            onValueChange={setHabilitadoMod}
+            value={habilitadoMod}
+            />
+            </Text>
+
+
+            <TouchableOpacity
+              style={styles.buttonAddItem}
+              onPress={() =>
+                modificarItem(tituloMod, categoriaMod, url_imagenMod, descripcionMod, precioMod, habilitadoMod)
+              }
+            >
+              <Text style={styles.addTitle}>
+                Modificar
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </ScrollView>
+  )}
+;
 
   function agregarCarritoItem(carritoItem) {
     if (
@@ -95,6 +177,51 @@ export default function DetallePlato({ navigation, route }) {
 
   function convertirAPesos(total) {
     return "$" + total.toLocaleString("de-DE");
+  }
+
+  async function modificarItem(tituloMod, categoriaMod, url_imagenMod, descripcionMod, precioMod, habilitadoMod) {
+      const unPlato = {
+      titulo: tituloMod,
+      categoria: categoriaMod,
+      url_imagen: url_imagenMod,
+      descripcion: descripcionMod,
+      precio: precioMod,
+      habilitado: habilitadoMod
+      };
+      console.log(unPlato);
+
+      await axios.put("http://localhost:3000/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu/"+_id, unPlato)
+      .then(response => { 
+        console.log(response)
+      })
+      .catch(error => {
+          console.log(error.response)
+      });
+
+      navigation.navigate("Menu");
+
+    /*
+    fetch("http://localhost:3000/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu/0", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        titulo: tituloMod,
+        categoria: categoriaMod,
+        url_imagen: url_imagenMod,
+        descripcion: descripcionMod,
+        precio: precioMod,
+        habilitado: habilitadoMod
+      })
+    })
+      .then(response => response.json())
+      .then(respuestaJson => {
+        return respuestaJson;
+      })
+      .catch((error) => {
+        console.error(error);
+      });*/
+
+
   }
 }
 
@@ -144,6 +271,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  url_imagenMod: {
+    marginTop: 15,
+    lineHeight: 22,
+    fontSize: 17,
+  },
   titulo: {
     fontSize: 20,
     fontWeight: "bold",
@@ -163,6 +295,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "red",
     marginHorizontal: 20
+  },
+  precioMod: {
+    fontWeight: "bold",
+    fontSize: 17,
+    color: "red",
+  },
+  checkbox: {
+    alignSelf: "center",
   },
   buttonAddItem: {
     alignItems: "center",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Icon } from "react-native-elements";
 import {
@@ -9,13 +9,23 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Input } from "react-native-elements";
+import GlobalContext from "../../components/global/context";
+import axios from "axios";
 
 export default function Cliente({ navigation }) {  
+  const context = useContext(GlobalContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  function validarLogin() {
-    fetch("https://gentle-hamlet-44521.herokuapp.com/api/usuarios/login", {
+  useEffect(() => {
+    console.log("CONTEXTO ACTUALIZADO", context);
+   },[context.user])
+
+ async function validarLogin() {
+
+  /*
+    //fetch("https://gentle-hamlet-44521.herokuapp.com/api/usuarios/login", {
+      fetch("http://localhost:3000/api/usuarios/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -27,14 +37,51 @@ export default function Cliente({ navigation }) {
     })
       .then((response) => response.json())
       .then((respuestaJson) => {
-        console.log(respuestaJson);        
+        context.setUser({
+          nombre: respuestaJson.usuario.nombre,
+          mail: respuestaJson.usuario.email,
+          rol: respuestaJson.usuario.rol,
+          token: respuestaJson.token,
+        })
+
         return respuestaJson;
       })
       .catch((error) => {
         console.error(error);
-      });
+      });*/
 
-      navigation.navigate("Encargado")
+      await axios.post("http://localhost:3000/api/usuarios/login", {
+        email: "admin@mozodigital.com", //email HARDCODEADO
+        //email: "cocinero@mozodigital.com", //email HARDCODEADO
+        password: "1234",               //password HARDCODEADO
+        //email: email, 
+        //password: password
+      })
+      .then(response => { 
+        console.log(response)
+
+        context.setUser({
+          nombre: response.data.usuario.nombre,
+          mail: response.data.usuario.email,
+          rol: response.data.usuario.rol,
+          token: response.data.token,
+        })
+
+        console.log("ACA LO QUE QUIERO VER",response.data.usuario.rol)
+        console.log("NAVIGATION POR ACA:",navigation)
+  
+        if(response.data.usuario.rol == "Admin") {
+          navigation.navigate("Encargado");
+        }
+        if(response.data.usuario.rol == "Cocinero") {
+          navigation.navigate("Cocinero");
+        }
+      })
+      .catch(error => {
+        console.log(error.response)
+        navigation.navigate("AppCliente")
+      });
+     
   }
 
   return (

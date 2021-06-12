@@ -29,9 +29,13 @@ export default function Index({ navigation }) {
 
       axios.get("http://localhost:3000/api/pedidos")
       .then(response => { 
+        console.log("ACA LA RESPUESTA", response)
         setPedidos(
-          response.data
+          response.data.filter((pedido) =>
+            //console.log("PEDIDO", pedido.estado)
+            pedido.estado == "Pedido" || pedido.estado == "En preparacion"
           )
+        );
       })
       .catch(error => {
           console.log(error.response)
@@ -54,12 +58,12 @@ export default function Index({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <Text>PANTALLA DE PEDIDOS</Text>
-      <SearchBar
+      {/*<SearchBar
         placeholder="Buscar"
         //onChangeText={(text) => cambiaFiltro(text)}
         //value={filtro}
         round="true"
-      />
+      />*/}
 
       <ScrollView>
         <Pedidos navigation={navigation} pedidos={pedidos} />

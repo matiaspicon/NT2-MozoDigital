@@ -2,9 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Icon } from "react-native-elements";
 import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
-import Menu from "../menu/menuStack";
 import ListadoPedidos from "./stackPedido";
-import Historicos from "./historicos";
 
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -12,7 +10,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const miStack = createBottomTabNavigator();
 
-export default function AppCliente() {
+export default function Cocinero() {
   return (
     
       <miStack.Navigator
@@ -20,14 +18,8 @@ export default function AppCliente() {
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
-            if (route.name === "Menu") {
-              iconName = "cutlery";
-            }
             if (route.name === "Listado Pedidos") {
               iconName = "book";
-            }
-            if (route.name === "Historicos") {
-              iconName = "history";
             }
 
             return (
@@ -48,9 +40,7 @@ export default function AppCliente() {
           },
         }}
       >
-        <miStack.Screen name="Menu" component={Menu} />
-        <miStack.Screen name="Listado Pedidos" component={ListadoPedidos} />
-        <miStack.Screen name="Historicos" component={Historicos} />                
+        <miStack.Screen name="Listado Pedidos" component={ListadoPedidos} />       
       </miStack.Navigator>
   );
 }

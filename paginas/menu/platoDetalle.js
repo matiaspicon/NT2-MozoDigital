@@ -42,7 +42,7 @@ export default function DetallePlato({ navigation, route }) {
   }, []);
   */
 
-  if(context.user.rol != "Admin") {       
+  if(context.user.rol != "Encargado") {       
     return (
     <ScrollView style={{ flex: 1, flexDirection: "column" }}>
       <View style={styles.platoDetallesContainer}>
@@ -190,7 +190,7 @@ export default function DetallePlato({ navigation, route }) {
       };
       console.log(unPlato);
 
-      await axios.put("http://localhost:3000/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu/"+_id, unPlato)
+      await axios.put("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu/"+_id, unPlato)
       .then(response => { 
         console.log(response)
       })

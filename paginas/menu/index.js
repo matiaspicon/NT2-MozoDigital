@@ -29,7 +29,7 @@ export default function Index({ navigation }) {
       })
       .catch((error) => console.log("Fallo:" + error));*/
 
-      await axios.get("http://localhost:3000/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0")
+      await axios.get("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0")
       .then(response => { 
         console.log(response)
         setMenu(

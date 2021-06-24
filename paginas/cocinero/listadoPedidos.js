@@ -27,7 +27,7 @@ export default function Index({ navigation }) {
       })
       .catch((error) => console.log("Fallo:" + error));*/
 
-      axios.get("http://localhost:3000/api/pedidos")
+      axios.get("https://gentle-hamlet-44521.herokuapp.com/api/pedidos")
       .then(response => { 
         console.log("ACA LA RESPUESTA", response)
         setPedidos(

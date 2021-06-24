@@ -14,7 +14,7 @@ export default function Cliente() {
   const [credenciales, setCredenciales] = useState();
 
   function login() {
-    const loginRequest = fetch("http://localhost:3000/api/usuarios/login");
+    const loginRequest = fetch("https://gentle-hamlet-44521.herokuapp.com/api/usuarios/login");
     return loginRequest
       .then((res) => res.json())
       .then((respuestaJson) => {

@@ -50,11 +50,11 @@ export default function Cliente({ navigation }) {
         console.error(error);
       });*/
 
-      await axios.post("http://localhost:3000/api/usuarios/login", {
-        email: "admin@mozodigital.com", //email HARDCODEADO
+      await axios.post("https://gentle-hamlet-44521.herokuapp.com/api/usuarios/login", {
+        //email: "encargado@mozodigital.com", //email HARDCODEADO
         //email: "cocinero@mozodigital.com", //email HARDCODEADO
         password: "1234",               //password HARDCODEADO
-        //email: email, 
+        email: email, 
         //password: password
       })
       .then(response => { 
@@ -70,7 +70,7 @@ export default function Cliente({ navigation }) {
         console.log("ACA LO QUE QUIERO VER",response.data.usuario.rol)
         console.log("NAVIGATION POR ACA:",navigation)
   
-        if(response.data.usuario.rol == "Admin") {
+        if(response.data.usuario.rol == "Encargado") {
           navigation.navigate("Encargado");
         }
         if(response.data.usuario.rol == "Cocinero") {

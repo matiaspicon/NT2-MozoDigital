@@ -13,6 +13,7 @@ import Menu from "../menu/index";
 import Contador from "../../components/contador/contador";
 
 import GlobalContext from "../../components/global/context";
+import axios from "axios";
 
 export default function Carrito({ navigation, route }) {
   const context = useContext(GlobalContext);
@@ -23,12 +24,17 @@ export default function Carrito({ navigation, route }) {
 
   function submitPedido() {
     const pedido = {
-      // "cliente": {...context.user},
-      menuItems: [...context.carritoItems],
+      cliente: context.user._id,
+      menuItems: context.carritoItems.map(item => {return {_id: item._id, cantidad: item.cantidad, precio : item.precio, titulo: item.titulo}}),
       estado: "En Preparacion",
     };
+    
     console.log("Pedido: ", pedido);
     context.setCarritoItems([]);
+    axios
+      .post("https://gentle-hamlet-44521.herokuapp.com/api/pedidos", pedido, {headers: { Authorization: `Bearer ${context.user.token}`}})
+      .then((response) => {console.log(response);})
+      .catch((error) => {console.log(error.response);});
   }
 
   function devolverTotal() {

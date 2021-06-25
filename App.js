@@ -4,7 +4,7 @@ import { Icon } from "react-native-elements";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StyleSheet, SafeAreaView, Text, View, Button, ScrollView } from "react-native";
 import Login from "./paginas/login/index";
-import AppCliente from "./paginas/app";
+import Cliente from "./paginas/cliente";
 import Encargado from "./paginas/encargado/index";
 import Cocinero from "./paginas/cocinero/index";
 import { NavigationContainer } from "@react-navigation/native";
@@ -40,7 +40,7 @@ export default function App() {
         <NavigationContainer>
           <loginStack.Navigator screenOptions={{headerShown: false}}>
             <loginStack.Screen name="Login" component={Login} />
-            <loginStack.Screen name="AppCliente" component={AppCliente} />
+            <loginStack.Screen name="Cliente" component={Cliente} />
             <loginStack.Screen name="Encargado" component={Encargado} />
             <loginStack.Screen name="Cocinero" component={Cocinero} />
           </loginStack.Navigator>

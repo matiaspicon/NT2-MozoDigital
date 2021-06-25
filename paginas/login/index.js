@@ -12,49 +12,23 @@ import { Input } from "react-native-elements";
 import GlobalContext from "../../components/global/context";
 import axios from "axios";
 
-export default function Cliente({ navigation }) {  
+export default function Login({ navigation, route}) {  
   const context = useContext(GlobalContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-
+  const [error, setError] = useState();
+  
   useEffect(() => {
     console.log("CONTEXTO ACTUALIZADO", context);
    },[context.user])
 
  async function validarLogin() {
 
-  /*
-    //fetch("https://gentle-hamlet-44521.herokuapp.com/api/usuarios/login", {
-      fetch("http://localhost:3000/api/usuarios/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        //email: email, //-->NO BORRAR 
-        //password: password, //-->NO BORRAR 
-        email: "admin@mozodigital.com", //email HARDCODEADO
-        password: "1234",               //password HARDCODEADO
-      }),
-    })
-      .then((response) => response.json())
-      .then((respuestaJson) => {
-        context.setUser({
-          nombre: respuestaJson.usuario.nombre,
-          mail: respuestaJson.usuario.email,
-          rol: respuestaJson.usuario.rol,
-          token: respuestaJson.token,
-        })
-
-        return respuestaJson;
-      })
-      .catch((error) => {
-        console.error(error);
-      });*/
-
       await axios.post("https://gentle-hamlet-44521.herokuapp.com/api/usuarios/login", {
         //email: "encargado@mozodigital.com", //email HARDCODEADO
         //email: "cocinero@mozodigital.com", //email HARDCODEADO
         password: "1234",               //password HARDCODEADO
-        email: email, 
+        email: email+"@mozodigital.com", 
         //password: password
       })
       .then(response => { 
@@ -67,7 +41,7 @@ export default function Cliente({ navigation }) {
           token: response.data.token,
         })
 
-        console.log("ACA LO QUE QUIERO VER",response.data.usuario.rol)
+        console.log("Usuario: ",response.data.usuario)
         console.log("NAVIGATION POR ACA:",navigation)
   
         if(response.data.usuario.rol == "Encargado") {
@@ -76,10 +50,17 @@ export default function Cliente({ navigation }) {
         if(response.data.usuario.rol == "Cocinero") {
           navigation.navigate("Cocinero");
         }
+        if(response.data.usuario.rol == "Cliente") {
+          navigation.navigate("Cliente");
+        }
+        if(response.data.usuario.rol == "Mozo") {
+          navigation.navigate("Mozo");
+        }
+
       })
       .catch(error => {
-        console.log(error.response)
-        navigation.navigate("AppCliente")
+        console.log("ERROR",error.response)
+        setError(error.response);
       });
      
   }
@@ -94,6 +75,9 @@ export default function Cliente({ navigation }) {
           justifyContent: "center",
         }}
       >
+        <View>
+          {error && <Text style={styles.errorText}>{error.data}</Text>}
+        </View>
         <Input
           placeholder="Email"
           leftIcon={
@@ -154,4 +138,10 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 16,
   },
+  errorText: {
+    color:"#ff0000",
+    fontWeight: "600",
+    fontSize: 25,
+
+  }
 });

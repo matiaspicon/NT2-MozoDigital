@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import ListadoPedidos from "./listadoPedidos";
-import DetallesPedido from "./detallePedido";
+import DetallesPedido from "../pedido/detallePedido";
 
 const PedidoStack = createStackNavigator();
 

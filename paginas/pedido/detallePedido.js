@@ -18,7 +18,7 @@ import GlobalContext from "../../components/global/context";
 let badge;
 
 function badgeStatus(estado) {
-  if (estado == "En preparacion") {
+  if (estado == "En Preparacion") {
     badge = "warning";
   }
   if (estado == "Terminado") {
@@ -29,7 +29,7 @@ function badgeStatus(estado) {
 
 export default function DetallePlato({ navigation, route }) {
   console.log("ROUTE PEDIDO DETALLE:", route);
-  const { _id, cliente, estado } = route.params;
+  const { _id, cliente, estado, total } = route.params;
   //console.log(route.params.menuItems);
   let items = route.params.menuItems;
 
@@ -73,8 +73,7 @@ export default function DetallePlato({ navigation, route }) {
           ))}
 
         <View style={styles.pedidosCard}>
-          <Text style={styles.pedidoLabel}>Total: $ </Text>
-          {/* <Text></Text> ACA VA EL TOTAL DEL PEDIDO*/}
+          <Text style={styles.pedidoLabel}>Total: ${total} </Text>
         </View>
       </View>
     </ScrollView>

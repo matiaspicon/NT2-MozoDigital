@@ -3,12 +3,15 @@ import { SafeAreaView, StyleSheet, ScrollView, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 //import Menu from "./menu";
 import { SearchBar } from "react-native-elements";
+import Pedidos from '../pedido'
 
 export default function Index({ navigation }) {
-  const [pedidos, setPedidos] = useState([]);
-  const [filtro, setFiltro] = useState("");
 
   console.log("NAVIGATION HISTORICOS:", navigation);
+
+  function filtroRol(pedido) {
+    return pedido.estado == "Entregado"
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -20,7 +23,9 @@ export default function Index({ navigation }) {
           //value={filtro}
           round="true"
         />
-        <ScrollView></ScrollView>
+        <ScrollView>
+          <Pedidos filtroRol={filtroRol}/> 
+        </ScrollView>
       </View>
     </SafeAreaView>    
   );

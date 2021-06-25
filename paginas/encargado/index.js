@@ -12,7 +12,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const miStack = createBottomTabNavigator();
 
-export default function AppCliente() {
+export default function Encargado() {
   return (
     
       <miStack.Navigator

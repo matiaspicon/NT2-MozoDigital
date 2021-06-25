@@ -42,122 +42,124 @@ export default function DetallePlato({ navigation, route }) {
   }, []);
   */
 
-  if(context.user.rol != "Encargado") {       
+  if (context.user.rol != "Encargado") {
     return (
-    <ScrollView style={{ flex: 1, flexDirection: "column" }}>
-      <View style={styles.platoDetallesContainer}>
-        <View>
-          <Image source={{ uri: url_imagen }} style={styles.imagen} />
-        </View>
+      <ScrollView style={{ flex: 1, flexDirection: "column" }}>
+        <View style={styles.platoDetallesContainer}>
+          <View>
+            <Image source={{ uri: url_imagen }} style={styles.imagen} />
+          </View>
 
-        <View style={styles.platoDetails}>
-          <View styles={styles.detalle}>
-            <Text style={styles.titulo}>{titulo}</Text>
+          <View style={styles.platoDetails}>
+            <View styles={styles.detalle}>
+              <Text style={styles.titulo}>{titulo}</Text>
 
-            <Text style={styles.categoria}>{categoria}</Text>
-            <Text style={styles.descripcion}>{descripcion}</Text>
-            <View style={{flexDirection: "row"}}>
-              <Text style={styles.precio}> ${precio}</Text>
+              <Text style={styles.categoria}>{categoria}</Text>
+              <Text style={styles.descripcion}>{descripcion}</Text>
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.precio}> ${precio}</Text>
 
-              <Contador
-                cantidad={cantidad}
-                cambiarCantidad={setCantidad}
-                aumentarCantidad={() => setCantidad(cantidad + 1)}
-                disminuirCantidad={() => setCantidad(cantidad - 1)}
-              />
+                <Contador
+                  cantidad={cantidad}
+                  cambiarCantidad={setCantidad}
+                  aumentarCantidad={() => setCantidad(cantidad + 1)}
+                  disminuirCantidad={() => setCantidad(cantidad - 1)}
+                />
+              </View>
+
+              <TouchableOpacity
+                style={styles.buttonAddItem}
+                onPress={() =>
+                  agregarCarritoItem({
+                    ...route.params.plato,
+                    cantidad: cantidad,
+                  })
+                }
+              >
+                <Text style={styles.addTitle}>
+                  Agregar item(s) {convertirAPesos(precio * cantidad)}
+                </Text>
+              </TouchableOpacity>
             </View>
-
-            <TouchableOpacity
-              style={styles.buttonAddItem}
-              onPress={() =>
-                agregarCarritoItem({
-                  ...route.params.plato,
-                  cantidad: cantidad,
-                })
-              }
-            >
-              <Text style={styles.addTitle}>
-                Agregar item(s) {convertirAPesos(precio * cantidad)}
-              </Text>
-            </TouchableOpacity>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    );
+  } else {
+    return (
+      <ScrollView style={{ flex: 1, flexDirection: "column" }}>
+        <View style={styles.platoDetallesContainer}>
+          <View>
+            <Image source={{ uri: url_imagen }} style={styles.imagen} />
+          </View>
 
-  )} else {
+          <View style={styles.platoDetails}>
+            <View styles={styles.detalle}>
+              <TextInput
+                style={styles.titulo}
+                onChangeText={setTituloMod}
+                value={tituloMod}
+              />
 
-    return (   
-    <ScrollView style={{ flex: 1, flexDirection: "column" }}>
-      <View style={styles.platoDetallesContainer}>
-        <View>
-          <Image source={{ uri: url_imagen }} style={styles.imagen} />
-        </View>
+              <TextInput
+                style={styles.categoria}
+                onChangeText={setCategoriaMod}
+                value={categoriaMod}
+              />
 
-        <View style={styles.platoDetails}>
-          <View styles={styles.detalle}>
+              <TextInput
+                style={styles.url_imagenMod}
+                onChangeText={setUrl_imagenMod}
+                value={url_imagenMod}
+                adjustsFontSizeToFit={true}
+              />
 
-            <TextInput 
-            style={styles.titulo}
-            onChangeText={setTituloMod}
-            value={tituloMod}
-            />
+              <TextInput
+                style={styles.descripcion}
+                onChangeText={setDescripcionMod}
+                value={descripcionMod}
+              />
 
-            <TextInput
-            style={styles.categoria}
-            onChangeText={setCategoriaMod}
-            value={categoriaMod}
-            />
-
-            <TextInput 
-            style={styles.url_imagenMod}
-            onChangeText={setUrl_imagenMod}
-            value={url_imagenMod}
-            adjustsFontSizeToFit={true}
-            />
-
-            <TextInput 
-            style={styles.descripcion}
-            onChangeText={setDescripcionMod}
-            value={descripcionMod}
-            />
-
-
-            <Text style={styles.precio}>$ 
-            <TextInput 
-            style={styles.precioMod}
-            onChangeText={setPrecioMod}
-            value={precioMod}
-            />
-            </Text>
-
-            <Text
-            style={styles.descripcion}> Habilitado:  
-            <CheckBox
-            style={styles.checkbox}
-            onValueChange={setHabilitadoMod}
-            value={habilitadoMod}
-            />
-            </Text>
-
-
-            <TouchableOpacity
-              style={styles.buttonAddItem}
-              onPress={() =>
-                modificarItem(tituloMod, categoriaMod, url_imagenMod, descripcionMod, precioMod, habilitadoMod)
-              }
-            >
-              <Text style={styles.addTitle}>
-                Modificar
+              <Text style={styles.precio}>
+                $
+                <TextInput
+                  style={styles.precioMod}
+                  onChangeText={setPrecioMod}
+                  value={precioMod}
+                />
               </Text>
-            </TouchableOpacity>
+
+              <Text style={styles.descripcion}>
+                {" "}
+                Habilitado:
+                <CheckBox
+                  style={styles.checkbox}
+                  onValueChange={setHabilitadoMod}
+                  value={habilitadoMod}
+                />
+              </Text>
+
+              <TouchableOpacity
+                style={styles.buttonAddItem}
+                onPress={() =>
+                  modificarItem(
+                    tituloMod,
+                    categoriaMod,
+                    url_imagenMod,
+                    descripcionMod,
+                    precioMod,
+                    habilitadoMod
+                  )
+                }
+              >
+                <Text style={styles.addTitle}>Modificar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
-  )}
-;
-
+      </ScrollView>
+    );
+  }
   function agregarCarritoItem(carritoItem) {
     if (
       context.carritoItems.find((itemFind) => itemFind._id == carritoItem._id)
@@ -179,26 +181,39 @@ export default function DetallePlato({ navigation, route }) {
     return "$" + total.toLocaleString("de-DE");
   }
 
-  async function modificarItem(tituloMod, categoriaMod, url_imagenMod, descripcionMod, precioMod, habilitadoMod) {
-      const unPlato = {
+  async function modificarItem(
+    tituloMod,
+    categoriaMod,
+    url_imagenMod,
+    descripcionMod,
+    precioMod,
+    habilitadoMod
+  ) {
+    const unPlato = {
       titulo: tituloMod,
       categoria: categoriaMod,
       url_imagen: url_imagenMod,
       descripcion: descripcionMod,
       precio: precioMod,
-      habilitado: habilitadoMod
-      };
-      console.log(unPlato);
+      habilitado: habilitadoMod,
+    };
+    console.log(unPlato);
 
-      await axios.put("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu/"+_id, unPlato)
-      .then(response => { 
-        console.log(response)
+    await axios
+      .put(
+        "https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu/" +
+          _id,
+        unPlato,
+        { headers: { Authorization: `Bearer ${context.user.token}` } }
+      )
+      .then((response) => {
+        console.log(response);
       })
-      .catch(error => {
-          console.log(error.response)
+      .catch((error) => {
+        console.log(error.response);
       });
 
-      navigation.navigate("Menu");
+    navigation.navigate("Menu");
 
     /*
     fetch("http://localhost:3000/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu/0", {
@@ -220,8 +235,6 @@ export default function DetallePlato({ navigation, route }) {
       .catch((error) => {
         console.error(error);
       });*/
-
-
   }
 }
 
@@ -294,7 +307,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     color: "red",
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
   precioMod: {
     fontWeight: "bold",

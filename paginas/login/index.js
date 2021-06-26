@@ -25,10 +25,11 @@ export default function Login({ navigation, route}) {
  async function validarLogin() {
 
       await axios.post("https://gentle-hamlet-44521.herokuapp.com/api/usuarios/login", {
-        //email: "encargado@mozodigital.com", //email HARDCODEADO
+        email: "encargado@mozodigital.com", //email HARDCODEADO
         //email: "cocinero@mozodigital.com", //email HARDCODEADO
+        //email: "cliente@mozodigital.com", //email HARDCODEADO
         password: "1234",               //password HARDCODEADO
-        email: email+"@mozodigital.com", 
+        //email: email+"@mozodigital.com", 
         //password: password
       })
       .then(response => { 

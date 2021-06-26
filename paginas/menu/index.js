@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { ScrollView, TextInput } from "react-native";
+import React, { useEffect, useState, useContext } from "react";
+import { ScrollView, TextInput, TouchableOpacity, StyleSheet, Text } from "react-native";
 import Menu from "./menu";
 import { SearchBar } from "react-native-elements";
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
+import GlobalContext from "../../components/global/context";
 
 export default function Index({ navigation }) {
   const [platos, setMenu] = useState([]);
   const [filtro, setFiltro] = useState("");
+
+  const context = useContext(GlobalContext);
 
   console.log("NAVIGATION INDEX:", navigation);
 
@@ -28,19 +31,33 @@ export default function Index({ navigation }) {
         );
       })
       .catch((error) => console.log("Fallo:" + error));*/
-
-      await axios.get("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0")
-      .then(response => { 
-        console.log(response)
-        setMenu(
-          response.data.menu.filter((plato) =>
-            plato.titulo.toLowerCase().includes(filtro.toLowerCase())
-          )
-        );
-      })
-      .catch(error => {
-          console.log(error.response)
-      });
+      if (context.user.rol != "Encargado") {
+        await axios.get("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0")
+        .then(response => { 
+          console.log(response)
+          setMenu(
+            response.data.menu.filter((plato) =>
+              plato.titulo.toLowerCase().includes(filtro.toLowerCase()) && plato.habilitado == true
+            )
+          );
+        })
+        .catch(error => {
+            console.log(error.response)
+        });
+      } else {
+        await axios.get("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0")
+        .then(response => { 
+          console.log(response)
+          setMenu(
+            response.data.menu.filter((plato) =>
+              plato.titulo.toLowerCase().includes(filtro.toLowerCase())
+            )
+          );
+        })
+        .catch(error => {
+            console.log(error.response)
+        });
+      }
   }
 
 
@@ -68,17 +85,60 @@ export default function Index({ navigation }) {
     setFiltro(filtro);
   };
 
-  return (
-    <>
-      <SearchBar
-        placeholder="Buscar"
-        onChangeText={(text) => setFiltro(text)}
-        value={filtro}
-        round="true"
-      />
-      <ScrollView>
-        <Menu navigation={navigation} platos={platos} />
-      </ScrollView>
-    </>
-  );
-}
+
+  if (context.user.rol != "Encargado") {
+    return (
+      <>
+        <SearchBar
+          placeholder="Buscar"
+          onChangeText={(text) => setFiltro(text)}
+          value={filtro}
+          round="true"
+        />
+        <ScrollView>
+          <Menu navigation={navigation} platos={platos} />
+        </ScrollView>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <SearchBar
+          placeholder="Buscar"
+          onChangeText={(text) => setFiltro(text)}
+          value={filtro}
+          round="true"
+        />
+        <ScrollView>
+          <Menu navigation={navigation} platos={platos} />
+          <TouchableOpacity
+            style={styles.buttonAddItem}
+            onPress={() =>
+              navigation.navigate("Agregar Item")
+            }
+          >
+            <Text style={styles.addTitle}> Agregar Item</Text>
+          </TouchableOpacity>
+        </ScrollView>
+
+      </>
+    );
+  }
+}  
+  
+const styles = StyleSheet.create({
+  buttonAddItem: {
+    alignItems: "center",
+    alignSelf: "center",
+    backgroundColor: "#EE3D3D",
+    borderRadius: 0,
+    padding: 8,
+    margin: 10,
+    height: 40,
+  },
+  addTitle: {
+    color: "#ffffff",
+    fontWeight: "600",
+    fontSize: 16,
+  }
+}); 

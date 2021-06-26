@@ -9,11 +9,12 @@ import {
   TouchableHighlight,
   StyleSheet,
   Button,
-  ScrollView,
+  ScrollView
 } from "react-native";
 import axios from "axios";
 import Contador from "../../components/contador/contador";
 import GlobalContext from "../../components/global/context";
+
 
 export default function DetallePlato({ navigation, route }) {
   //console.log("ROUTE:", route);
@@ -139,8 +140,10 @@ export default function DetallePlato({ navigation, route }) {
                 />
               </Text>
 
+              <Text>{'\n'}</Text>
+
               <TouchableOpacity
-                style={styles.buttonAddItem}
+                style={styles.buttonModifyItem}
                 onPress={() =>
                   modificarItem(
                     tituloMod,
@@ -153,6 +156,17 @@ export default function DetallePlato({ navigation, route }) {
                 }
               >
                 <Text style={styles.addTitle}>Modificar</Text>
+              </TouchableOpacity>
+
+              <Text>{'\n'}</Text>
+
+              <TouchableOpacity
+                style={styles.buttonDeleteItem}
+                onPress={() =>
+                  borrarItem()
+                }
+              >
+                <Text style={styles.deleteTitle}> Eliminar</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -179,6 +193,34 @@ export default function DetallePlato({ navigation, route }) {
 
   function convertirAPesos(total) {
     return "$" + total.toLocaleString("de-DE");
+  }
+
+  async function borrarItem() {
+    //window.confirm("sometext");
+    if (confirm("Está seguro de continuar con la operación?")) {
+      axios
+      .delete("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu/"+_id, {headers: { Authorization: `Bearer ${context.user.token}`}})
+      .then((response) => {console.log(response);})
+      .catch((error) => {console.log(error.response);});
+      navigation.navigate("Menu");
+    }
+
+
+    /*Alert.alert(
+      "Atención!",
+      "Está seguro de continuar con la operación?",
+      [
+        {
+          text: "Cancelar",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Aceptar", onPress: () => axios
+      .delete("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu"+_id, pedido, {headers: { Authorization: `Bearer ${context.user.token}`}})
+      .then((response) => {console.log(response);})
+      .catch((error) => {console.log(error.response);}); }
+      ]
+    );*/
   }
 
   async function modificarItem(
@@ -306,25 +348,46 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 16,
-    color: "red",
+    color: "#EE3D3D",
     marginHorizontal: 20,
   },
   precioMod: {
     fontWeight: "bold",
     fontSize: 17,
-    color: "red",
+    color: "#EE3D3D",
   },
   checkbox: {
     alignSelf: "center",
   },
   buttonAddItem: {
     alignItems: "center",
-    backgroundColor: "red",
+    backgroundColor: "#EE3D3D",
     borderRadius: 40,
     padding: 8,
   },
   addTitle: {
     color: "#ffffff",
+    fontWeight: "600",
+    fontSize: 16,
+  },
+  buttonModifyItem: {
+    alignItems: "center",
+    backgroundColor: "#EE3D3D",
+    borderRadius: 0,
+    padding: 8,
+    borderColor: "#EE3D3D",
+    borderWidth: 1
+  },
+  buttonDeleteItem: {
+    alignItems: "center",
+    backgroundColor: "white",
+    borderRadius: 0,
+    padding: 8,
+    borderColor: "#EE3D3D",
+    borderWidth: 1
+  },
+  deleteTitle: {
+    color: "#EE3D3D",
     fontWeight: "600",
     fontSize: 16,
   },

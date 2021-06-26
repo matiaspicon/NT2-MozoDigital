@@ -26,7 +26,7 @@ export default function Carrito({ navigation, route }) {
     const pedido = {
       cliente: context.user._id,
       menuItems: context.carritoItems.map(item => {return {_id: item._id, cantidad: item.cantidad, precio : item.precio, titulo: item.titulo}}),
-      estado: "En preparacion",
+      estado: "Pedido",
     };
     
     console.log("Pedido: ", pedido);

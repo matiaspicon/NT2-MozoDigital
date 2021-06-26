@@ -1,15 +1,16 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import Menu from "./index";
 import DetallesPlato from "./platoDetalle";
+import Home from "./menuHome.js";
+import Menu from "./menu.js";
 import AgregarItem from "./agregarItem";
-import Carrito from "../carrito/index";
 
 const MenuStack = createStackNavigator();
 
 export default function MenuStackScreen() {
   return (
     <MenuStack.Navigator>
+      <MenuStack.Screen name="Home" component={Home} />
       <MenuStack.Screen name="Menu" component={Menu} />
       <MenuStack.Screen name="Detalles Plato" component={DetallesPlato} />
       <MenuStack.Screen name="Agregar Item" component={AgregarItem} />

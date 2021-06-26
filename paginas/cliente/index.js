@@ -20,9 +20,7 @@ export default function Cliente() {
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
-            if (route.name === "Home") {
-              iconName = "home";
-            }
+
             if (route.name === "Menu") {
               iconName = "cutlery";
             }
@@ -51,7 +49,6 @@ export default function Cliente() {
           },
         }}
       >
-        <miStack.Screen name="Home" component={Home} />
         <miStack.Screen name="Menu" component={Menu} />
         <miStack.Screen name="Usuario" component={Usuario} />
         <miStack.Screen name="Carrito" component={Carrito} />                    

@@ -17,6 +17,7 @@ export default function Login({ navigation, route}) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState();
+  const [emailValidationError, setEmailValidationError] = useState("");
   
   useEffect(() => {
     console.log("CONTEXTO ACTUALIZADO", context);
@@ -66,6 +67,19 @@ export default function Login({ navigation, route}) {
      
   }
 
+  function validateEmail(email) {
+    const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (emailRegex.test(email)) {
+      setEmailValidationError("");
+      setEmail(email);
+    } else if (email != ""){
+      setEmailValidationError("Ingrese una direccion de mail válida");
+    }
+    else{
+      setEmailValidationError("");
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View
@@ -85,7 +99,8 @@ export default function Login({ navigation, route}) {
             <Icon type="font-awesome" name="envelope" size={20} color="grey" />
           }
           style={styles}
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={(email) => validateEmail(email)}
+          errorMessage={emailValidationError}
         />
 
         <Input
@@ -99,7 +114,7 @@ export default function Login({ navigation, route}) {
 
         <TouchableOpacity
           style={styles.ingresarBtn}
-          onPress={() => navigation.navigate("AppCliente")}
+          onPress={() => navigation.navigate("Cliente")}
         >
           <Text style={styles.addTitle}>Ingresar</Text>
         </TouchableOpacity>

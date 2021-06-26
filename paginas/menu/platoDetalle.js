@@ -256,27 +256,6 @@ export default function DetallePlato({ navigation, route }) {
       });
 
     navigation.navigate("Menu");
-
-    /*
-    fetch("http://localhost:3000/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu/0", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        titulo: tituloMod,
-        categoria: categoriaMod,
-        url_imagen: url_imagenMod,
-        descripcion: descripcionMod,
-        precio: precioMod,
-        habilitado: habilitadoMod
-      })
-    })
-      .then(response => response.json())
-      .then(respuestaJson => {
-        return respuestaJson;
-      })
-      .catch((error) => {
-        console.error(error);
-      });*/
   }
 }
 

@@ -6,9 +6,15 @@ import GlobalContext from "../../components/global/context";
 import axios from "axios";
 
 export default function ListadoPedidos({ navigation }) {
+  const context = useContext(GlobalContext);
+  
   function filtroRol(pedido) {
     return pedido.estado == "Pedido" || pedido.estado == "En preparacion";
   }
+
+  useEffect(() => {
+    navigation.setOptions({ title: `${context.user.rol} - Detalles Pedido`});
+  }, );
 
   return (
     <SafeAreaView style={styles.container}>

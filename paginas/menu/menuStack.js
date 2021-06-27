@@ -12,8 +12,7 @@ export default function MenuStackScreen() {
     <MenuStack.Navigator>
       <MenuStack.Screen name="Home" component={Home} />
       <MenuStack.Screen name="Menu" component={Menu} />
-      <MenuStack.Screen name="Detalles Plato" component={DetallesPlato} />
-      <MenuStack.Screen name="Agregar Item" component={AgregarItem} />
+      <MenuStack.Screen name="Detalles Plato" component={DetallesPlato} />      
     </MenuStack.Navigator>
   );
 }

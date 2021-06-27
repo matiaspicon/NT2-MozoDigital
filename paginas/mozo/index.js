@@ -2,10 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Icon } from "react-native-elements";
 import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
-import Menu from "../menu/menuStack";
 import ListadoPedidos from "./stackPedido";
-import Historicos from "./historicos";
-import AgregarItem from "../menu/agregarItem";
 
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -13,7 +10,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const miStack = createBottomTabNavigator();
 
-export default function Encargado() {
+export default function Mozo() {
   return (
     
       <miStack.Navigator
@@ -21,17 +18,8 @@ export default function Encargado() {
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
-            if (route.name === "Menu") {
-              iconName = "cutlery";
-            }
             if (route.name === "Listado Pedidos") {
               iconName = "book";
-            }
-            if (route.name === "Historicos") {
-              iconName = "history";
-            }
-            if (route.name === "Agregar Item") {
-              iconName = "plus-square";
             }
 
             return (
@@ -52,10 +40,7 @@ export default function Encargado() {
           },
         }}
       >
-        <miStack.Screen name="Menu" component={Menu} />
-        <miStack.Screen name="Listado Pedidos" component={ListadoPedidos} />
-        <miStack.Screen name="Historicos" component={Historicos} />                
-        <miStack.Screen name="Agregar Item" component={AgregarItem} />                
+        <miStack.Screen name="Listado Pedidos" component={ListadoPedidos} />       
       </miStack.Navigator>
   );
 }

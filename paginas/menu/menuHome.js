@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   TouchableOpacity,
@@ -14,33 +14,44 @@ import { StatusBar } from "expo-status-bar";
 import { SearchBar } from "react-native-elements";
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
+import GlobalContext from "../../components/global/context";
 
 export default function Index({ navigation }) {
   const [platos, setMenu] = useState([]);
   const [filtro, setFiltro] = useState("");
 
+  const context = useContext(GlobalContext);
+
   console.log("NAVIGATION INDEX:", navigation);
 
   async function buscaMenu() {
-    await axios
-      .get(
-        "https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60c691e702f7b72f983a5347/sucursales/0"
-      )
-      .then((response) => {
-        console.log("Menu Home:", response);
+    if (context.user.rol != "Encargado") {
+      await axios.get("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60c691e702f7b72f983a5347/sucursales/0")
+      .then(response => { 
+        console.log(response)
+        setMenu(
+          response.data.menu.filter((plato) =>
+            plato.titulo.toLowerCase().includes(filtro.toLowerCase()) && plato.habilitado == true
+          )
+        );
+      })
+      .catch(error => {
+          console.log(error.response)
+      });
+    } else {
+      await axios.get("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0")
+      .then(response => { 
+        console.log(response)
         setMenu(
           response.data.menu.filter((plato) =>
             plato.titulo.toLowerCase().includes(filtro.toLowerCase())
           )
         );
       })
-      .catch((error) => {
-        console.log(error.response);
+      .catch(error => {
+          console.log(error.response)
       });
-    console.log(
-      "bebidas",
-      platos.filter((plato) => plato.categoria == "bebida")
-    );
+    }
   }
 
   useFocusEffect(

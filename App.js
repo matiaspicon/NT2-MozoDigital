@@ -7,6 +7,7 @@ import Login from "./paginas/login/index";
 import Cliente from "./paginas/cliente";
 import Encargado from "./paginas/encargado/index";
 import Cocinero from "./paginas/cocinero/index";
+import Mozo from "./paginas/mozo/index";
 import { NavigationContainer } from "@react-navigation/native";
 import GlobalContext from "./components/global/context";
 
@@ -43,6 +44,7 @@ export default function App() {
             <loginStack.Screen name="Cliente" component={Cliente} />
             <loginStack.Screen name="Encargado" component={Encargado} />
             <loginStack.Screen name="Cocinero" component={Cocinero} />
+            <loginStack.Screen name="Mozo" component={Mozo} />
           </loginStack.Navigator>
         </NavigationContainer>      
     </GlobalContext.Provider>

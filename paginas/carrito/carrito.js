@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -17,24 +17,46 @@ import axios from "axios";
 
 export default function Carrito({ navigation, route }) {
   const context = useContext(GlobalContext);
+  const [habilitarSubmitPedido, sethabilitarSubmitPedido] = useState(false); 
 
   useEffect(() => {
-    console.log("State dentro de Carrito: ", context);
+    console.log("State dentro de Carrito: ", context);       
   }, []);
+
+  useEffect(() => {
+    if (context.carritoItems.length > 0) {
+      sethabilitarSubmitPedido(true);
+    } else {
+      sethabilitarSubmitPedido(false);
+    }
+  }, );
 
   function submitPedido() {
     const pedido = {
       cliente: context.user._id,
-      menuItems: context.carritoItems.map(item => {return {_id: item._id, cantidad: item.cantidad, precio : item.precio, titulo: item.titulo}}),
+      menuItems: context.carritoItems.map((item) => {
+        return {
+          _id: item._id,
+          cantidad: item.cantidad,
+          precio: item.precio,
+          titulo: item.titulo,
+        };
+      }),
       estado: "Pedido",
     };
-    
+
     console.log("Pedido: ", pedido);
     context.setCarritoItems([]);
     axios
-      .post("https://gentle-hamlet-44521.herokuapp.com/api/pedidos", pedido, {headers: { Authorization: `Bearer ${context.user.token}`}})
-      .then((response) => {console.log(response);})
-      .catch((error) => {console.log(error.response);});
+      .post("https://gentle-hamlet-44521.herokuapp.com/api/pedidos", pedido, {
+        headers: { Authorization: `Bearer ${context.user.token}` },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
   }
 
   function devolverTotal() {
@@ -131,8 +153,13 @@ export default function Carrito({ navigation, route }) {
             </View>
 
             <TouchableOpacity
-              style={styles.realizarPedidoBtn}
+              style={
+                !habilitarSubmitPedido
+                  ? styles.realizarPedidoBtnDisabled
+                  : styles.realizarPedidoBtn
+              }
               onPress={submitPedido}
+              disabled={!habilitarSubmitPedido}
             >
               <Text style={styles.realizarPedidoTitle}>Realizar pedido</Text>
             </TouchableOpacity>
@@ -185,7 +212,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#EE3D3D",
     borderRadius: 40,
     padding: 8,
+    marginHorizontal: 30,    
+  },
+  realizarPedidoBtnDisabled: {
+    alignItems: "center",
+    backgroundColor: "#EE3D3D",
+    borderRadius: 40,
+    padding: 8,
     marginHorizontal: 30,
+    opacity: 0.5,
   },
   realizarPedidoTitle: {
     color: "#ffffff",

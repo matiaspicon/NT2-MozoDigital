@@ -15,7 +15,7 @@ export default function Index({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
+      
         <Text>PANTALLA DE PEDIDOS HISTORICOS</Text>
         <SearchBar
           placeholder="Buscar"
@@ -26,7 +26,7 @@ export default function Index({ navigation }) {
         <ScrollView>
           <Pedidos filtroRol={filtroRol}/> 
         </ScrollView>
-      </View>
+      
     </SafeAreaView>    
   );
 }

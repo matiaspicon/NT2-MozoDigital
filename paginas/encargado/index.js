@@ -6,6 +6,7 @@ import Menu from "../menu/menuStack";
 import ListadoPedidos from "./stackPedido";
 import Historicos from "./historicos";
 import AgregarItem from "../menu/agregarItem";
+import Empleados from "../usuario/stackUsuario";
 
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -33,6 +34,9 @@ export default function Encargado() {
             if (route.name === "Agregar Item") {
               iconName = "plus-square";
             }
+            if (route.name === "Empleados") {
+              iconName = "users";
+            }
 
             return (
               <Icon
@@ -56,6 +60,7 @@ export default function Encargado() {
         <miStack.Screen name="Listado Pedidos" component={ListadoPedidos} />
         <miStack.Screen name="Historicos" component={Historicos} />                
         <miStack.Screen name="Agregar Item" component={AgregarItem} />                
+        <miStack.Screen name="Empleados" component={Empleados} />                
       </miStack.Navigator>
   );
 }

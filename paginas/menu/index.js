@@ -16,7 +16,7 @@ export default function Index({ navigation }) {
 
   async function buscaMenu() {
       if (context.user.rol != "Encargado") {
-        await axios.get("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0")
+        await axios.get("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal)
         .then(response => { 
           console.log(response)
           setMenu(
@@ -29,7 +29,7 @@ export default function Index({ navigation }) {
             console.log(error.response)
         });
       } else {
-        await axios.get("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0")
+        await axios.get("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal)
         .then(response => { 
           console.log(response)
           setMenu(

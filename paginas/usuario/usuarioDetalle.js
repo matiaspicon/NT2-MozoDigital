@@ -143,7 +143,7 @@ export default function DetalleUsuario({ navigation, route }) {
     //window.confirm("sometext");
     if (confirm("Está seguro de continuar con la operación?")) {
       axios
-      .delete("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu/"+_id, {headers: { Authorization: `Bearer ${context.user.token}`}})
+      .delete("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal + "/menu/" +_id, {headers: { Authorization: `Bearer ${context.user.token}`}})
       .then((response) => {console.log(response);})
       .catch((error) => {console.log(error.response);});
       navigation.navigate("Menu");
@@ -186,9 +186,7 @@ export default function DetalleUsuario({ navigation, route }) {
     console.log(unPlato);
 
     await axios
-      .put(
-        "https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu/" +
-          _id,
+      .put("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal + "/menu/" + _id,
         unPlato,
         { headers: { Authorization: `Bearer ${context.user.token}` } }
       )

@@ -127,7 +127,7 @@ export default function AgregarItem({ navigation, route }) {
     if (unPlato.titulo != null && unPlato.precio != null) {
         await axios
         .post(
-        "https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu/",
+        "https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal + "/menu/",
         unPlato,
         { headers: { Authorization: `Bearer ${context.user.token}` } }
         )

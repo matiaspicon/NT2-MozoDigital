@@ -4,7 +4,7 @@ import { Icon } from "react-native-elements";
 import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
 import Menu from "../menu/menuStack";
 import ListadoPedidos from "./stackPedido";
-import Historicos from "./historicos";
+import Historicos from "./stackHistorico";
 import AgregarItem from "../menu/agregarItem";
 import Empleados from "../usuario/stackUsuario";
 

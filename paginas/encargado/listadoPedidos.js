@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import { StyleSheet, SafeAreaView, ScrollView, Text, View } from "react-native";
 import Pedidos from "../pedido";
 import { SearchBar } from "react-native-elements";
-import axios from "axios";
 import GlobalContext from "../../components/global/context";
 
 

@@ -6,25 +6,23 @@ import { SearchBar } from "react-native-elements";
 import Pedidos from '../pedido'
 
 export default function Index({ navigation }) {
-
+ 
   console.log("NAVIGATION HISTORICOS:", navigation);
-
+  const [filtro, setFiltro] = useState("")
   function filtroRol(pedido) {
-    return pedido.estado == "Entregado"
+    return pedido.estado == "Entregado" || (filtro && pedido.titulo.toLowerCase() == filtro.toLowerCase())
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      
-        <Text>PANTALLA DE PEDIDOS HISTORICOS</Text>
         <SearchBar
           placeholder="Buscar"
-          //onChangeText={(text) => cambiaFiltro(text)}
-          //value={filtro}
+          onChangeText={(text) => setFiltro(text)}
+          value={filtro}
           round="true"
         />
         <ScrollView>
-          <Pedidos filtroRol={filtroRol}/> 
+          <Pedidos navigation={navigation} filtroRol={filtroRol} />
         </ScrollView>
       
     </SafeAreaView>    

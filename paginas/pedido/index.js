@@ -83,8 +83,9 @@ export default function ListaPedidos({ navigation, filtroRol }) {
           pedidos.map((pedido, index) => (
             <TouchableOpacity
               onPress={() => navigation.push("Detalles Pedido", pedido)}
+              key={index}
             >
-              <View key={index} style={styles.pedidosContainer}>
+              <View style={styles.pedidosContainer}>
                 <View>
                   <View style={styles.pedidosCard}>
                     <Text style={styles.pedidoLabel}>N° Pedido: </Text>

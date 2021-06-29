@@ -2,12 +2,20 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { Icon } from "react-native-elements";
 import { createStackNavigator } from "@react-navigation/stack";
-import { StyleSheet, SafeAreaView, Text, View, Button, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  Text,
+  View,
+  Button,
+  ScrollView,
+} from "react-native";
 import Login from "./paginas/login/index";
 import Cliente from "./paginas/cliente";
 import Encargado from "./paginas/encargado/index";
 import Cocinero from "./paginas/cocinero/index";
 import Mozo from "./paginas/mozo/index";
+import CodigoQR from "./paginas/codigoqr/index";
 import { NavigationContainer } from "@react-navigation/native";
 import GlobalContext from "./components/global/context";
 
@@ -24,30 +32,33 @@ export default function App() {
   });
 
   const [restaurante, setRestaurante] = useState({
-    idRestaurante : "60da2ed8a6201c21d533e75e",
-    idSucursal : 0,
-    mesa: 0
-  })
+    idRestaurante: "60da2ed8a6201c21d533e75e",
+    idSucursal: 0,
+    mesa: -1,
+  });
 
   return (
-    <GlobalContext.Provider value={{
-      carritoItems,
-      setCarritoItems,
-      user,
-      setUser,
-      restaurante,
-      setRestaurante
-    }}>
-      <StatusBar backgroundColor="black" />      
-        <NavigationContainer>
-          <loginStack.Navigator screenOptions={{headerShown: false}}>
-            <loginStack.Screen name="Login" component={Login} />
-            <loginStack.Screen name="Cliente" component={Cliente} />
-            <loginStack.Screen name="Encargado" component={Encargado} />
-            <loginStack.Screen name="Cocinero" component={Cocinero} />
-            <loginStack.Screen name="Mozo" component={Mozo} />
-          </loginStack.Navigator>
-        </NavigationContainer>      
+    <GlobalContext.Provider
+      value={{
+        carritoItems,
+        setCarritoItems,
+        user,
+        setUser,
+        restaurante,
+        setRestaurante,
+      }}
+    >
+      <StatusBar backgroundColor="black" />
+      <NavigationContainer>
+        <loginStack.Navigator screenOptions={{ headerShown: false }}>
+          <loginStack.Screen name="Login" component={Login} />
+          <loginStack.Screen name="CodigoQR" component={CodigoQR} />
+          <loginStack.Screen name="Cliente" component={Cliente} />
+          <loginStack.Screen name="Encargado" component={Encargado} />
+          <loginStack.Screen name="Cocinero" component={Cocinero} />
+          <loginStack.Screen name="Mozo" component={Mozo} />
+        </loginStack.Navigator>
+      </NavigationContainer>
     </GlobalContext.Provider>
   );
 }

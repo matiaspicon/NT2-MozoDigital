@@ -14,6 +14,7 @@ import axios from "axios";
 
 export default function Login({ navigation, route }) {
   const context = useContext(GlobalContext);
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState();
@@ -26,13 +27,14 @@ export default function Login({ navigation, route }) {
   async function validarLogin() {
     await axios
       .post("https://gentle-hamlet-44521.herokuapp.com/api/usuarios/login", {
-        email: "encargado@mozodigital.com", //email HARDCODEADO
+        //email: "encargado@mozodigital.com", //email HARDCODEADO
         //email: "cocinero@mozodigital.com", //email HARDCODEADO
         //email: "mozo@mozodigital.com", //email HARDCODEADO
         //email: "cliente@mozodigital.com", //email HARDCODEADO
         password: "1234", //password HARDCODEADO
         //email: email+"@mozodigital.com",
         //password: password
+        email: email,
       })
       .then((response) => {
         console.log(response);
@@ -46,16 +48,22 @@ export default function Login({ navigation, route }) {
 
         console.log("Usuario: ", response.data.usuario);
         console.log("NAVIGATION POR ACA:", navigation);
+        
+        if (response.data.usuario.rol == "Cliente") {
+          navigation.navigate("CodigoQR");
+        }
 
+        // if (response.data.usuario.rol != "Cliente") {
+        //   console.log("HOLA DESDE EL LOG")
+        //   context.setRestaurante({...context.restaurante, idRestaurante: response.data.usuario.restaurante, idSucursal: response.data.usuario.sucursal})
+        // }
         if (response.data.usuario.rol == "Encargado") {
           navigation.navigate("Encargado");
         }
         if (response.data.usuario.rol == "Cocinero") {
           navigation.navigate("Cocinero");
         }
-        if (response.data.usuario.rol == "Cliente") {
-          navigation.navigate("Cliente");
-        }
+        
         if (response.data.usuario.rol == "Mozo") {
           navigation.navigate("Mozo");
         }

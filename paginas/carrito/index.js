@@ -42,6 +42,9 @@ export default function Carrito({ navigation, route }) {
           titulo: item.titulo,
         };
       }),
+      restaurante: context.restaurante.idRestaurante,
+      sucursal: context.restaurante.idSucursal,
+      mesa: context.restaurante.mesa,
       estado: "Pedido",
     };
 

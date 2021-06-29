@@ -9,10 +9,16 @@ import GlobalContext from "../../components/global/context";
 let badge;
 
 function badgeStatus(pedido) {
-  if (pedido.estado == "En Preparacion") {
+  if (pedido.estado == "Pedido") {
+    badge = "error";
+  }
+  if (pedido.estado == "En preparacion") {
     badge = "warning";
   }
-  if (pedido.estado == "Terminado") {
+  if (pedido.estado == "Listo") {
+    badge = "primary";
+  }
+  if (pedido.estado == "Entregado") {
     badge = "success";
   }
   return badge;

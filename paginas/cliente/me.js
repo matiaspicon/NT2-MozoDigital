@@ -46,7 +46,6 @@ async function getDatos(){
             <View style={styles.pedidosCard}>
               <Text style={styles.pedidoLabel}>EMail:</Text>
               <Text>{user.email}</Text>
-              {}
             </View>
 
             <View style={styles.pedidosCard}>

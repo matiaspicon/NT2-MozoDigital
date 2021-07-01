@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Icon } from "react-native-elements";
 import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
 import Home from "../home/index";
@@ -9,12 +9,15 @@ import Carrito from "../carrito/index";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import GlobalContext from "../../components/global/context";
 
 const miStack = createBottomTabNavigator();
 
-export default function Cliente() {
-  return (
-    
+export default function Cliente(route) {
+  const context = useContext(GlobalContext);      
+  context.restaurante.mesa = route.route.params;
+
+  return (    
       <miStack.Navigator
         initialRouteName="Home"
         screenOptions={({ route }) => ({

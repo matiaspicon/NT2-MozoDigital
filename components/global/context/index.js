@@ -10,9 +10,10 @@ const data = {
     },
     restaurante : {
         id : "",
-        sucursalId: ""
+        sucursalId: "",
+        mesa: ""
     },
-    nombre : ""
+    nombre : "",    
 };
 
 

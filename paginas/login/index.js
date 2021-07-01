@@ -30,11 +30,11 @@ export default function Login({ navigation, route }) {
         //email: "encargado@mozodigital.com", //email HARDCODEADO
         //email: "cocinero@mozodigital.com", //email HARDCODEADO
         //email: "mozo@mozodigital.com", //email HARDCODEADO
-        //email: "cliente@mozodigital.com", //email HARDCODEADO
+        email: "cliente@mozodigital.com", //email HARDCODEADO
         password: "1234", //password HARDCODEADO
         //email: email+"@mozodigital.com",
         //password: password
-        email: email,
+        //email: email,
       })
       .then((response) => {
         console.log(response);

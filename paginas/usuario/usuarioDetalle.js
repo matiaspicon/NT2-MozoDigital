@@ -227,7 +227,7 @@ export default function DetalleUsuario({ navigation, route }) {
     console.log("Un Empleado: ",unEmpleado);
 
     await axios
-      .put("http://localhost:3000/api/usuarios/" + _id,
+      .put("https://gentle-hamlet-44521.herokuapp.com/api/usuarios/" + _id,
         unEmpleado,
         { headers: { Authorization: `Bearer ${context.user.token}` } }
       )

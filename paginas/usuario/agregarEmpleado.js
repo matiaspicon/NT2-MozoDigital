@@ -154,7 +154,7 @@ export default function AgregarEmpleado({ navigation, route }) {
         if (unEmpleado.email != null && unEmpleado.nombre != null && unEmpleado.apellido != null && unEmpleado.password != null && unEmpleado.rol != null) {
             await axios
                 .post(
-                    "http://localhost:3000/api/usuarios/empleado",
+                    "https://gentle-hamlet-44521.herokuapp.com/api/usuarios/empleado",
                     unEmpleado,
                     { headers: { Authorization: `Bearer ${context.user.token}` } }
                 )

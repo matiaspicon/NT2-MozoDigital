@@ -3,6 +3,7 @@ import { SafeAreaView, StyleSheet, ScrollView, Text, View, TouchableOpacity } fr
 import { NavigationContainer } from "@react-navigation/native";
 //import Menu from "./menu";
 import { SearchBar } from "react-native-elements";
+import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import GlobalContext from "../../components/global/context";
 import Usuario from "./usuario";
@@ -33,6 +34,20 @@ export default function Empleados({ navigation }) {
     buscaUsuarios();
   }, [filtro]);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused.
+      //alert('Home Screen was focused');
+      setTimeout(() => {
+        buscaUsuarios();
+      }, 1000);
+      return () => {
+     // Do something when the screen is unfocused
+     //alert('Home Screen was unfocused');
+      };
+    }, [])
+  );
+
   const cambiaFiltro = (filtro) => {
     setFiltro(filtro);
   };
@@ -56,7 +71,7 @@ export default function Empleados({ navigation }) {
           <TouchableOpacity
             style={styles.buttonAddItem}
             onPress={() =>
-              navigation.navigate("Agregar Item")
+              navigation.navigate("Agregar Empleado")
             }
           >
             <Text style={styles.addTitle}> Agregar Empleado</Text>

@@ -13,30 +13,67 @@ import {
 } from "react-native";
 import axios from "axios";
 import Contador from "../../components/contador/contador";
+import { Picker } from "@react-native-picker/picker";
+import MultiSelect from "react-multi-select-component";
 import GlobalContext from "../../components/global/context";
+import { useFocusEffect } from "@react-navigation/native";
 
 
 export default function DetalleUsuario({ navigation, route }) {
   console.log("ROUTE:", route);
   const {
     _id,
-    nombre, 
+    nombre,
     apellido,
     email,
-    rol
+    rol,
+    restaurante,
+    sucursal,
+    mesas
   } = route.params;
+
+  const context = useContext(GlobalContext);
 
   const [emailMod, setEmailMod] = useState(email);
   const [nombreMod, setNombreMod] = useState(nombre);
   const [apellidoMod, setApellidoMod] = useState(apellido);
   const [rolMod, setRolMod] = useState(rol);
-  
-  const context = useContext(GlobalContext);
+  const [mesasMod, setMesasMod] = useState([]);
+  const [mesasDisponibles, setMesasDisponibles] = useState();
+  const [mesasOp, setMesasOp] = useState([]);
 
-  /*useEffect(() => {
-    console.log("State dentro de Detalle plato", context);
-  }, []);
-  */
+  async function buscaMesas() {
+    await axios.get("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal)
+      .then(response => {
+        console.log(response)
+        setMesasDisponibles(response.data.mesas);
+      })
+      .catch(error => {
+        console.log(error.response)
+      });
+  }
+
+  buscaMesas();
+
+  for (let index = 1; index <= mesasDisponibles; index++) {
+    if (mesasOp.length != mesasDisponibles) {
+      mesasOp.push({ label: index, value: index });
+    }
+  }
+
+  useEffect(() => {
+    if (rol == "Mozo") {
+      for (let index = 0; index <= mesas.length; index++) {
+        if (mesasMod.length != mesas.length) {
+          mesasMod.push({ label: parseInt(mesas[index]), value: parseInt(mesas[index]) });
+        }
+      }
+    }
+    console.log("Mesas OP:", mesasOp);
+    console.log("Mesas MOD:", mesasMod);
+  }, [rol]);
+
+
 
   if (context.user.rol != "Encargado") {
     return (
@@ -47,7 +84,7 @@ export default function DetalleUsuario({ navigation, route }) {
               <Text style={styles.descripcion}>{email}</Text>
               <Text style={styles.descripcion}>{nombre}</Text>
               <Text style={styles.descripcion}>{apellido}</Text>
-            
+
             </View>
           </View>
         </View>
@@ -57,32 +94,57 @@ export default function DetalleUsuario({ navigation, route }) {
     return (
       <ScrollView style={{ flex: 1, flexDirection: "column" }}>
         <View style={styles.platoDetallesContainer}>
-
           <View style={styles.platoDetails}>
             <View styles={styles.detalle}>
+              <Text>Email: </Text>
               <TextInput
                 style={styles.descripcion}
                 onChangeText={setEmailMod}
                 value={emailMod}
               />
 
+
+              <Text>Nombre: </Text>
               <TextInput
                 style={styles.descripcion}
                 onChangeText={setNombreMod}
                 value={nombreMod}
               />
 
+
+
+              <Text>Apellido: </Text>
               <TextInput
                 style={styles.descripcion}
                 onChangeText={setApellidoMod}
                 value={apellidoMod}
               />
 
-              <TextInput
-                style={styles.descripcion}
-                onChangeText={setRolMod}
-                value={rolMod}
-              />
+              <Text>Rol: </Text>
+              <Picker
+                onValueChange={(rolMod, itemIndex) => setRolMod(rolMod)}
+                selectedValue={rolMod}
+                style={{ width: 200 }}
+              >
+                <Picker.Item label="Encargado" value="Encargado" />
+                <Picker.Item label="Cocinero" value="Cocinero" />
+                <Picker.Item label="Mozo" value="Mozo" />
+              </Picker>
+
+
+              {(rolMod == "Mozo") ? [
+
+                <Text>Mesas: </Text>,
+                <MultiSelect
+                  options={mesasOp}
+                  value={mesasMod}
+                  onChange={setMesasMod}
+                  labelledBy="Mesas"
+                />
+              ] : null}
+
+
+
 
               <Text>{'\n'}</Text>
 
@@ -90,12 +152,11 @@ export default function DetalleUsuario({ navigation, route }) {
                 style={styles.buttonModifyItem}
                 onPress={() =>
                   modificarItem(
-                    tituloMod,
-                    categoriaMod,
-                    url_imagenMod,
-                    descripcionMod,
-                    precioMod,
-                    habilitadoMod
+                    emailMod,
+                    nombreMod,
+                    apellidoMod,
+                    rolMod,
+                    mesasMod
                   )
                 }
               >
@@ -107,7 +168,7 @@ export default function DetalleUsuario({ navigation, route }) {
               <TouchableOpacity
                 style={styles.buttonDeleteItem}
                 onPress={() =>
-                  borrarItem()
+                  borrarEmpleado()
                 }
               >
                 <Text style={styles.deleteTitle}> Eliminar</Text>
@@ -115,38 +176,19 @@ export default function DetalleUsuario({ navigation, route }) {
             </View>
           </View>
         </View>
-      </ScrollView>
+      </ScrollView >
     );
   }
-  function agregarCarritoItem(carritoItem) {
-    if (
-      context.carritoItems.find((itemFind) => itemFind._id == carritoItem._id)
-    ) {
-      let carritoPivot = [...context.carritoItems];
-      carritoPivot.find(
-        (itemFind) => itemFind._id == carritoItem._id
-      ).cantidad += carritoItem.cantidad;
-      context.setCarritoItems(carritoPivot);
-    } else {
-      context.setCarritoItems([...context.carritoItems, carritoItem]);
-    }
 
-    navigation.navigate("Menu");
-    //navigation.push("Menu");
-  }
 
-  function convertirAPesos(total) {
-    return "$" + total.toLocaleString("de-DE");
-  }
-
-  async function borrarItem() {
+  async function borrarEmpleado() {
     //window.confirm("sometext");
     if (confirm("Está seguro de continuar con la operación?")) {
       axios
-      .delete("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal + "/menu/" +_id, {headers: { Authorization: `Bearer ${context.user.token}`}})
-      .then((response) => {console.log(response);})
-      .catch((error) => {console.log(error.response);});
-      navigation.navigate("Menu");
+        .delete("https://gentle-hamlet-44521.herokuapp.com/api/usuarios/" + _id, { headers: { Authorization: `Bearer ${context.user.token}` } })
+        .then((response) => { console.log(response); })
+        .catch((error) => { console.log(error.response); });
+      navigation.navigate("Empleados");
     }
 
 
@@ -155,39 +197,38 @@ export default function DetalleUsuario({ navigation, route }) {
       "Está seguro de continuar con la operación?",
       [
         {
-          text: "Cancelar",
+            text: "Cancelar",
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
         },
-        { text: "Aceptar", onPress: () => axios
-      .delete("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu"+_id, pedido, {headers: { Authorization: `Bearer ${context.user.token}`}})
+          {text: "Aceptar", onPress: () => axios
+          .delete("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu"+_id, pedido, {headers: {Authorization: `Bearer ${context.user.token}`}})
       .then((response) => {console.log(response);})
       .catch((error) => {console.log(error.response);}); }
-      ]
-    );*/
+          ]
+          );*/
   }
 
   async function modificarItem(
-    tituloMod,
-    categoriaMod,
-    url_imagenMod,
-    descripcionMod,
-    precioMod,
-    habilitadoMod
+    emailMod,
+    nombreMod,
+    apellidoMod,
+    rolMod,
+    mesasMod
   ) {
-    const unPlato = {
-      titulo: tituloMod,
-      categoria: categoriaMod,
-      url_imagen: url_imagenMod,
-      descripcion: descripcionMod,
-      precio: precioMod,
-      habilitado: habilitadoMod,
+    mesasMod = mesasMod.map(element => element.value)
+    const unEmpleado = {
+      email: emailMod,
+      nombre: nombreMod,
+      apellido: apellidoMod,
+      rol: rolMod,
+      mesas: mesasMod,
     };
-    console.log(unPlato);
+    console.log("Un Empleado: ",unEmpleado);
 
     await axios
-      .put("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal + "/menu/" + _id,
-        unPlato,
+      .put("http://localhost:3000/api/usuarios/" + _id,
+        unEmpleado,
         { headers: { Authorization: `Bearer ${context.user.token}` } }
       )
       .then((response) => {
@@ -197,7 +238,7 @@ export default function DetalleUsuario({ navigation, route }) {
         console.log(error.response);
       });
 
-    navigation.navigate("Menu");
+    navigation.navigate("Empleados");
   }
 }
 
@@ -261,9 +302,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   descripcion: {
-    marginTop: 15,
     lineHeight: 22,
-    fontSize: 17,
+    fontSize: 16,
+    borderWidth: 1
   },
   precio: {
     marginTop: 10,

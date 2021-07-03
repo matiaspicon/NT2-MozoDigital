@@ -196,25 +196,26 @@ export default function Carrito({ navigation, route }) {
       </View>
       <ScrollView>
         <ItemSlide />
-      </ScrollView>
-      <View>
-        <View style={styles.containerTotal}>
-          <Text style={styles.total}>Total</Text>
-          <Text style={styles.total}>${devolverTotal()}</Text>
-        </View>
 
-        <TouchableOpacity
-          style={
-            !habilitarSubmitPedido
-              ? styles.realizarPedidoBtnDisabled
-              : styles.realizarPedidoBtn
-          }
-          onPress={submitPedido}
-          disabled={!habilitarSubmitPedido}
-        >
-          <Text style={styles.realizarPedidoTitle}>Realizar pedido</Text>
-        </TouchableOpacity>
-      </View>
+        <View>
+          <View style={styles.containerTotal}>
+            <Text style={styles.total}>Total</Text>
+            <Text style={styles.total}>${devolverTotal()}</Text>
+          </View>
+
+          <TouchableOpacity
+            style={
+              !habilitarSubmitPedido
+                ? styles.realizarPedidoBtnDisabled
+                : styles.realizarPedidoBtn
+            }
+            onPress={submitPedido}
+            disabled={!habilitarSubmitPedido}
+          >
+            <Text style={styles.realizarPedidoTitle}>Realizar pedido</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

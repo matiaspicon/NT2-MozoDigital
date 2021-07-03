@@ -49,9 +49,8 @@ export default function ListaPedidos({ navigation, filtroRol }) {
         console.log("ACA LA RESPUESTA", response);
 
         setPedidos(
-          response.data.filter(filtroRol).map((pedido) => {
-            pedido.total = devolverTotal(pedido);
-            return pedido;
+          response.data.filter(filtroRol).map((pedido) => {pedido.total = devolverTotal(pedido);
+          return pedido;
           })
         );
 
@@ -86,7 +85,10 @@ export default function ListaPedidos({ navigation, filtroRol }) {
 
       <View style={styles.container}>
         {pedidos &&
-          pedidos.map((pedido, index) => (
+          pedidos.sort(function (a, b) {
+            var dateA = new Date(a.fecha), dateB = new Date(b.fecha)
+            return dateB - dateA
+          }).map((pedido, index) => (
             <TouchableOpacity
               onPress={() => navigation.push("Detalles Pedido", pedido)}
               key={index}
@@ -96,6 +98,11 @@ export default function ListaPedidos({ navigation, filtroRol }) {
                   <View style={styles.pedidosCard}>
                     <Text style={styles.pedidoLabel}>N° Pedido: </Text>
                     <Text>{pedido._id}</Text>
+                  </View>
+
+                  <View style={styles.pedidosCard}>
+                    <Text style={styles.pedidoLabel}>Fecha: </Text>
+                    <Text>{pedido.fecha}</Text>
                   </View>
 
                   <View style={styles.pedidosCard}>

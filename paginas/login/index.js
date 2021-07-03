@@ -7,6 +7,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Platform
 } from "react-native";
 import { Input } from "react-native-elements";
 import GlobalContext from "../../components/global/context";
@@ -50,7 +51,8 @@ export default function Login({ navigation, route }) {
         //console.log("NAVIGATION POR ACA:", navigation);
         
         if (response.data.usuario.rol == "Cliente") {
-          navigation.navigate("CodigoQR");
+          if(Platform.OS != 'web') navigation.navigate("CodigoQR");
+          else navigation.navigate("IngresarMesa")
         }
 
         // if (response.data.usuario.rol != "Cliente") {

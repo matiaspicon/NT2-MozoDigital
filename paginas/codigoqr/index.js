@@ -1,123 +1,82 @@
-import React, { useEffect, useState, useContext } from "react";
-import { StatusBar } from "expo-status-bar";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput,
-  SafeAreaView,
-} from "react-native";
-//import QRScan from "../../components/qrScanner";
-import { Input } from "react-native-elements";
+import React, { useState, useEffect, useContext } from "react";
+import { Text, View, StyleSheet, Button } from "react-native";
+import { BarCodeScanner } from "expo-barcode-scanner";
+import GlobalContext from "../../components/global/context";
 
-export default function Home({ navigation }) {
-  const [ingresoHabilitado, setIngresoHabilitado] = useState(false);
-  const [mesaValidationError, setMesaValidationError] = useState("");
-  const [mesa, setMesa] = useState("");
+export default function App({navigation}) {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
+  const [ready, setReady] = useState(false);
+  const context = useContext(GlobalContext);
 
   useEffect(() => {
-    if (mesa != "") {
-      setIngresoHabilitado(true);
-    } else {
-      setIngresoHabilitado(false);
-    }
-  }, [mesa]);
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
 
-  function validarMesa(mesa) {
-    const numberRegex = /^[0-9]+$/;
-    if (numberRegex.test(mesa)) {
-      setMesaValidationError("");
-      setMesa(mesa);
-    } else if (mesa != "") {
-      setMesaValidationError("Solo se aceptan caracteres numericos");
-      setMesa("");
-    } else {
-      setMesaValidationError("");
-      setMesa("");
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    console.log(`${data}`);    
+    try{
+      const {idRestaurante, idSucursal, mesa} = JSON.parse(data);
+      context.setRestaurante({idRestaurante, idSucursal, mesa});
+      setReady(true);
+    }catch(error){
+      console.log(error.message)
+      alert("Ocurrio un error en el escaneo... Intente nuevamente");
     }
+
+    
+  };
+
+  if (hasPermission === null) {
+    console.log("Requesting for camera permission");
+    return <Text>Requesting for camera permission</Text>;
+  }
+  if (hasPermission === false) {
+    console.log("No access to camera");
+    return <Text>No access to camera</Text>;
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <Text style={styles.tituloBienvenida}>Bienvenido a Mozo Digital</Text>
-
-        <Input
-          onChangeText={(mesa) => validarMesa(mesa)}
-          placeholder="Ingrese el numero de mesa"
-          keyboardType="numeric"
-          renderErrorMessage="false"
-          inputContainerStyle={styles.inputContainer}
-          errorMessage={mesaValidationError}
-          errorStyle={styles.errorStyle}
-          style={styles.inputMesa}
-        />
-
-        <TouchableOpacity
-          style={
-            !ingresoHabilitado ? styles.irAMenuBtnDisabled : styles.irAMenuBtn
-          }
-          onPress={() => navigation.navigate("Cliente", mesa)}
-          disabled={!ingresoHabilitado}
-        >
-          <Text style={styles.irAMenuTitle}>Ir a Menu</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <Text>HOLASDASDASDSD</Text>
+      <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+      />
+      <Button
+        title={"Ingresar manualmente"}
+        onPress={() => navigation.push("IngresarMesa")}
+      />
+      {scanned && (
+        <View>
+          <Button
+            title={"Escanear nuevamente"}
+            onPress={() => setScanned(false)}
+          />
+          {ready && <Button
+            title={"Continuar"}
+            onPress={() => navigation.push("Cliente")}
+          />}
+        </View>
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    justifyContent: "center",
-    flex: 1,
-  },
   container: {
     flex: 1,
+    alignItems: "center",
     justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "#fff",
   },
-  irAMenuBtn: {
-    alignItems: "center",
-    backgroundColor: "#EE3D3D",
-    borderRadius: 40,
-    padding: 8,
-    marginHorizontal: 30,
-    marginTop: 20,
-    width: 170,
-  },
-  irAMenuBtnDisabled: {
-    alignItems: "center",
-    backgroundColor: "#EE3D3D",
-    borderRadius: 40,
-    padding: 8,
-    marginHorizontal: 30,
-    marginTop: 20,
-    width: 170,
-    opacity: 0.5,
-  },
-  irAMenuTitle: {
-    color: "#ffffff",
-    fontWeight: "600",
-    fontSize: 16,
-  },
-  inputMesa: {
-    borderColor: "black",
-    fontSize: 15,
-    textAlign: "center",
-    marginVertical: 20,
-    borderBottomWidth: 0,
-  },
-  tituloBienvenida: {
-    fontSize: 20,
-  },
-  errorStyle: {
-    textAlign: "center",
-  },
-  inputContainer: {
-    borderBottomWidth: 0,
-    textAlign: "center",
-    borderColor: "red",
+  barCodeView: {
+    width: "100%",
+    height: "50%",
+    marginBottom: 40,
   },
 });

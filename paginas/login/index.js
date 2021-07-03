@@ -30,11 +30,11 @@ export default function Login({ navigation, route }) {
         //email: "encargado@mozodigital.com", //email HARDCODEADO
         //email: "cocinero@mozodigital.com", //email HARDCODEADO
         //email: "mozo@mozodigital.com", //email HARDCODEADO
-        email: "cliente@mozodigital.com", //email HARDCODEADO
+        //email: "cliente@mozodigital.com", //email HARDCODEADO
         password: "1234", //password HARDCODEADO
         //email: email+"@mozodigital.com",
         //password: password
-        //email: email,
+        email: email,
       })
       .then((response) => {
         console.log(response);
@@ -47,7 +47,7 @@ export default function Login({ navigation, route }) {
         });
 
         console.log("Usuario: ", response.data.usuario);
-        console.log("NAVIGATION POR ACA:", navigation);
+        //console.log("NAVIGATION POR ACA:", navigation);
         
         if (response.data.usuario.rol == "Cliente") {
           navigation.navigate("CodigoQR");

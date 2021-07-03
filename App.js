@@ -15,7 +15,8 @@ import Cliente from "./paginas/cliente";
 import Encargado from "./paginas/encargado/index";
 import Cocinero from "./paginas/cocinero/index";
 import Mozo from "./paginas/mozo/index";
-import CodigoQR from "./paginas/codigoqr/index";
+import CodigoQR from "./paginas/codigoqr/index"
+import IngresarMesa from "./paginas/cliente/ingresarMesa"
 import { NavigationContainer } from "@react-navigation/native";
 import GlobalContext from "./components/global/context";
 
@@ -53,6 +54,7 @@ export default function App() {
         <loginStack.Navigator screenOptions={{ headerShown: false }}>
           <loginStack.Screen name="Login" component={Login} />
           <loginStack.Screen name="CodigoQR" component={CodigoQR} />
+          <loginStack.Screen name="IngresarMesa" component={IngresarMesa} />
           <loginStack.Screen name="Cliente" component={Cliente} />
           <loginStack.Screen name="Encargado" component={Encargado} />
           <loginStack.Screen name="Cocinero" component={Cocinero} />

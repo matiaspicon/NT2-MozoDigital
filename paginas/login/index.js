@@ -40,6 +40,17 @@ export default function Login({ navigation, route }) {
       .then((response) => {
         console.log(response);
 
+        console.log("Usuario: ", response.data.usuario);
+
+        if (response.data.usuario.rol == "Mozo") {
+          context.setUser({nombre: response.data.usuario.nombre,
+            mail: response.data.usuario.email,
+            rol: response.data.usuario.rol,
+            token: response.data.token,
+            mesas: response.data.usuario.mesas});
+          navigation.navigate("Mozo");
+        }
+
         context.setUser({
           nombre: response.data.usuario.nombre,
           mail: response.data.usuario.email,
@@ -47,7 +58,7 @@ export default function Login({ navigation, route }) {
           token: response.data.token,
         });
 
-        console.log("Usuario: ", response.data.usuario);
+        
         //console.log("NAVIGATION POR ACA:", navigation);
         
         if (response.data.usuario.rol == "Cliente") {
@@ -55,10 +66,11 @@ export default function Login({ navigation, route }) {
           else navigation.navigate("IngresarMesa")
         }
 
-        // if (response.data.usuario.rol != "Cliente") {
-        //   console.log("HOLA DESDE EL LOG")
-        //   context.setRestaurante({...context.restaurante, idRestaurante: response.data.usuario.restaurante, idSucursal: response.data.usuario.sucursal})
-        // }
+        if (response.data.usuario.rol != "Cliente") {
+          console.log("HOLA DESDE EL LOG")
+          context.setRestaurante({...context.restaurante, idRestaurante: response.data.usuario.restaurante, idSucursal: response.data.usuario.sucursal})
+        }
+
         if (response.data.usuario.rol == "Encargado") {
           navigation.navigate("Encargado");
         }
@@ -66,9 +78,6 @@ export default function Login({ navigation, route }) {
           navigation.navigate("Cocinero");
         }
         
-        if (response.data.usuario.rol == "Mozo") {
-          navigation.navigate("Mozo");
-        }
       })
       .catch((error) => {
         console.log("ERROR", error.response);
@@ -130,9 +139,9 @@ export default function Login({ navigation, route }) {
 
         <TouchableOpacity
           style={styles.ingresarBtn}
-          onPress={() => navigation.navigate("Cliente")}
+          onPress={() => navigation.navigate("Register")}
         >
-          <Text style={styles.addTitle}>Ingresar</Text>
+          <Text style={styles.addTitle}>Registrarse</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

@@ -164,6 +164,9 @@ export default function Carrito({ navigation, route }) {
         };
       }),
       estado: "Pedido",
+      restaurante: context.restaurante.idRestaurante,
+      sucursal: context.restaurante.idSucursal + "",
+      mesa: context.restaurante.mesa,
     };
 
     console.log("Pedido: ", pedido);

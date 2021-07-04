@@ -30,6 +30,7 @@ export default function App() {
     mail: "",
     rol: "",
     token: "",
+    mesas: []
   });
 
   const [restaurante, setRestaurante] = useState({
@@ -55,6 +56,7 @@ export default function App() {
           <loginStack.Screen name="Login" component={Login} />
           <loginStack.Screen name="CodigoQR" component={CodigoQR} />
           <loginStack.Screen name="IngresarMesa" component={IngresarMesa} />
+          <loginStack.Screen name="Register" component={IngresarMesa} />
           <loginStack.Screen name="Cliente" component={Cliente} />
           <loginStack.Screen name="Encargado" component={Encargado} />
           <loginStack.Screen name="Cocinero" component={Cocinero} />

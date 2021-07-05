@@ -9,7 +9,7 @@ export default function ListadoPedidos({ navigation }) {
     const context = useContext(GlobalContext);
 
   useEffect(() => {
-    navigation.setOptions({ title: `${context.user.rol} - Detalles Pedido`});
+    navigation.setOptions({ title: `${context.user.rol} - Listado Pedidos`});
   }, );
 
   function filtroRol(pedido){

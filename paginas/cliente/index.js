@@ -15,7 +15,11 @@ const miStack = createBottomTabNavigator();
 
 export default function Cliente(route) {
   const context = useContext(GlobalContext);      
-  context.restaurante.mesa = route.route.params;
+  const {restaurante, sucursal, mesa} = route.route.params;
+  
+  context.restaurante.idRestaurante = restaurante;
+  context.restaurante.idSucursal = sucursal;
+  context.restaurante.mesa = mesa;
 
   return (    
       <miStack.Navigator

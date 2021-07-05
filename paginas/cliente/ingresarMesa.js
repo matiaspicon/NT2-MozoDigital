@@ -9,32 +9,99 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Input } from "react-native-elements";
+import { Picker } from "@react-native-picker/picker";
+import axios from "axios";
 
 export default function IngresarMesa({ navigation }) {
   const [ingresoHabilitado, setIngresoHabilitado] = useState(false);
-  const [mesaValidationError, setMesaValidationError] = useState("");
+  const [restaurantes, setRestaurantes] = useState("");
+  const [restaurante, setRestaurante] = useState(restaurantes[0]);
+  const [sucursal, setSucursal] = useState("");
   const [mesa, setMesa] = useState("");
 
   useEffect(() => {
-    if (mesa != "") {
-      setIngresoHabilitado(true);
-    } else {
-      setIngresoHabilitado(false);
-    }
-  }, [mesa]);
+    buscarRestaurantes();
+  }, []);
 
-  function validarMesa(mesa) {
-    const numberRegex = /^[0-9]+$/;
-    if (numberRegex.test(mesa)) {
-      setMesaValidationError("");
-      setMesa(mesa);
-    } else if (mesa != "") {
-      setMesaValidationError("Solo se aceptan caracteres numericos");
-      setMesa("");
-    } else {
-      setMesaValidationError("");
-      setMesa("");
-    }
+  async function buscarRestaurantes() {
+    await axios
+      .get("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/")
+      .then((response) => {
+        console.log(response);
+        //var filtrados = response.data.filter((r) => r.sucursales != null);
+        setRestaurante(response.data[0]._id);
+        setSucursal(response.data[0].sucursales[0]._id);
+        setMesa(response.data[0].sucursales[0].mesas[0]._id);
+        setRestaurantes(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  }
+
+  function restaurantesDisponibles() {
+    return (
+      <Picker      
+        onValueChange={(restauranteSeleccionado, itemIndex) => actualizarRestaurante(restauranteSeleccionado)}
+        selectedValue={restaurante}
+        style={{ width: 200 }}
+      >
+        {restaurantes &&
+          restaurantes.map((restaurant, index) => (
+            <Picker.Item
+              key={index}
+              label={restaurant.nombre}
+              value={restaurant._id}
+            />
+          ))}
+      </Picker>
+    );
+  }
+
+  function sucursalesDisponibles() {
+    return (
+      <Picker        
+        onValueChange={(sucursalSeleccionada, itemIndex) => actualizarSucursal(sucursalSeleccionada)
+        }
+        selectedValue={sucursal}
+        style={{ width: 200 }}
+      >
+        {restaurantes && 
+          restaurantes.find(r => r._id == restaurante).sucursales.map((suc, index) =>
+            
+              <Picker.Item key={index} label={suc.direccion} value={suc._id} />
+            )
+        }
+      </Picker>
+    );
+  }
+
+  function mesasDisponibles() {
+    return (
+      <Picker
+        onValueChange={(mesaSeleccionada, itemIndex) => setMesa(mesaSeleccionada)}
+        selectedValue={mesa}
+        style={{ width: 200 }}
+      >
+        {restaurantes && 
+          restaurantes.find(r => r._id == restaurante).sucursales.find(s => s._id == sucursal).mesas.map((mesa, index) =>
+            
+              <Picker.Item key={index} label={mesa._id} value={mesa._id} />
+            )
+        }
+      </Picker>     
+    );
+  }
+
+  function actualizarRestaurante(nuevoRestaurante){
+    setRestaurante(nuevoRestaurante);
+    setSucursal(restaurantes.find(r => r._id == nuevoRestaurante).sucursales[0]._id);
+    setMesa(restaurantes.find(r => r._id == nuevoRestaurante).sucursales.find(s => s._id == sucursal).mesas[0]);
+  }
+
+  function actualizarSucursal(nuevaSucursal){
+    setSucursal(nuevaSucursal);
+    setMesa(restaurantes.find(r => r._id == restaurante).sucursales.find(s => s._id == nuevaSucursal).mesas[0]);
   }
 
   return (
@@ -42,23 +109,24 @@ export default function IngresarMesa({ navigation }) {
       <View style={styles.container}>
         <Text style={styles.tituloBienvenida}>Bienvenido a Mozo Digital</Text>
 
-        <Input
-          onChangeText={(mesa) => validarMesa(mesa)}
-          placeholder="Ingrese el numero de mesa"
-          keyboardType="numeric"
-          renderErrorMessage="false"
-          inputContainerStyle={styles.inputContainer}
-          errorMessage={mesaValidationError}
-          errorStyle={styles.errorStyle}
-          style={styles.inputMesa}
-        />
+        <View style={styles.pedidosCard}>
+          <Text style={styles.pedidoLabel}>Restaurante:</Text>
+          {restaurantesDisponibles()}
+        </View>
+
+        <View style={styles.pedidosCard}>
+          <Text style={styles.pedidoLabel}>Sucursal:</Text>
+          {sucursalesDisponibles()}
+        </View>
+        
+        <View style={styles.pedidosCard}>
+          <Text style={styles.pedidoLabel}>Sucursal:</Text>
+          {mesasDisponibles()}
+        </View>
 
         <TouchableOpacity
-          style={
-            !ingresoHabilitado ? styles.irAMenuBtnDisabled : styles.irAMenuBtn
-          }
-          onPress={() => navigation.navigate("Cliente", mesa)}
-          disabled={!ingresoHabilitado}
+          style={styles.irAMenuBtn}
+          onPress={() => navigation.navigate("Cliente", {restaurante: restaurante, sucursal: sucursal, mesa: mesa})}
         >
           <Text style={styles.irAMenuTitle}>Ir a Menu</Text>
         </TouchableOpacity>

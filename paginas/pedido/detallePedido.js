@@ -21,7 +21,7 @@ import axios from "axios";
 
 export default function DetallePlato({ navigation, route }) {
   console.log("ROUTE PEDIDO DETALLE:", route);
-  const { _id, fecha,  cliente, estado, total } = route.params;
+  const { _id, fecha,  cliente, estado, total, mesa } = route.params;
   const context = useContext(GlobalContext);
   let items = route.params.menuItems;
   let badge;
@@ -110,6 +110,11 @@ export default function DetallePlato({ navigation, route }) {
         </View>
 
         <View style={styles.pedidosCard}>
+          <Text style={styles.pedidoLabel}>Mesa: </Text>
+          <Text> {mesa}</Text>
+        </View>
+
+        <View style={styles.pedidosCard}>
           <Text style={styles.pedidoLabel}>Cliente: </Text>
           <Text>{cliente}</Text>
         </View>
@@ -126,7 +131,7 @@ export default function DetallePlato({ navigation, route }) {
         {items &&
           items.map((item, index) => (
             <View key={index} style={styles.pedidosCard}>
-              <Text> - {item.titulo}</Text>
+              <Text> - {item.titulo} x {item.cantidad}</Text>
             </View>
           ))}
 

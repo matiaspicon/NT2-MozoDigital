@@ -14,7 +14,7 @@ export default function Index({ navigation }) {
   }
 
   useEffect(() => {
-    navigation.setOptions({ title: `${context.user.rol} - Detalles Pedido`});
+    navigation.setOptions({ title: `${context.user.rol} - Listado Pedidos`});
   }, );
 
 

@@ -172,7 +172,7 @@ export default function Carrito({ navigation, route }) {
     console.log("Pedido: ", pedido);
     context.setCarritoItems([]);
     axios
-      .post("http://localhost:3000/api/pedidos", pedido, {
+      .post("https://gentle-hamlet-44521.herokuapp.com/api/pedidos", pedido, {
         headers: { Authorization: `Bearer ${context.user.token}` },
       })
       .then((response) => {

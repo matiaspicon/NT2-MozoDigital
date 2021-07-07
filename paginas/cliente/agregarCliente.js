@@ -37,7 +37,7 @@ export default function AgregarCliente({ navigation, route }) {
         if (unCliente.email != null && unCliente.nombre != null && unCliente.apellido != null && unCliente.password != null) {
             await axios
                 .post(
-                    "http://localhost:3000/api/usuarios",
+                    "https://gentle-hamlet-44521.herokuapp.com/api/usuarios",
                     unCliente)
                 .then((response) => {
                     console.log(response);

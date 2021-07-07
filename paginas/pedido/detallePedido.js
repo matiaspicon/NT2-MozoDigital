@@ -24,10 +24,8 @@ export default function DetallePlato({ navigation, route }) {
   const { _id, fecha,  cliente, estado, total, mesa } = route.params;
   const context = useContext(GlobalContext);
   let items = route.params.menuItems;
-  let badge;
-  //console.log(route.params.menuItems);
 
-  const [nuevoEstado, setNuevoEstado] = useState("");
+  const [nuevoEstado, setNuevoEstado] = useState(estado);
 
   console.log("items:", items);
 
@@ -65,7 +63,6 @@ export default function DetallePlato({ navigation, route }) {
           selectedValue={nuevoEstado}
           style={{ width: 200 }}
         >
-          <Picker.Item label="Selecciona uno" value="En preparacion" />
           <Picker.Item label="En preparacion" value="En preparacion" />
           <Picker.Item label="Listo" value="Listo" />
           <Picker.Item label="Entregado" value="Entregado" />
@@ -77,7 +74,6 @@ export default function DetallePlato({ navigation, route }) {
         <Picker
           onValueChange={(nuevoEstado, itemIndex) =>setNuevoEstado(nuevoEstado)}
         >
-          <Picker.Item label="Selecciona uno" value="En preparacion" />
           <Picker.Item label="En preparacion" value="En preparacion" />
           <Picker.Item label="Listo" value="Listo" />
         </Picker>
@@ -88,7 +84,6 @@ export default function DetallePlato({ navigation, route }) {
         <Picker
           onValueChange={(nuevoEstado, itemIndex) => setNuevoEstado(nuevoEstado)}
         >
-          <Picker.Item label="Selecciona uno" value="Listo" />
           <Picker.Item label="Listo" value="Listo" />
           <Picker.Item label="Entregado" value="Entregado" />
         </Picker>

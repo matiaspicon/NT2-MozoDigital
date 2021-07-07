@@ -54,6 +54,7 @@ export default function Index({ navigation }) {
     }
   }
 
+
   useFocusEffect(
     React.useCallback(() => {
       // Do something when the screen is focused.
@@ -90,7 +91,9 @@ export default function Index({ navigation }) {
                   (plato) =>
                     plato.categoria != "bebida" && plato.categoria != "postre"
                 ),
-                categoria: "Platos"
+                categoria: "Platos",
+                buscaMenu
+
               })
             }
           >
@@ -120,7 +123,8 @@ export default function Index({ navigation }) {
               navigation.push("Menu", {
                 navigation: navigation,
                 platos: platos.filter((plato) => plato.categoria == "bebida"),
-                categoria: "Bebidas"
+                categoria: "Bebidas",
+                buscaMenu
               })
             }
           >
@@ -150,7 +154,8 @@ export default function Index({ navigation }) {
               navigation.push("Menu", {
                 navigation: navigation,
                 platos: platos.filter((plato) => plato.categoria == "postre"),
-                categoria: "Postres"
+                categoria: "Postres",
+                buscaMenu
               })
             }
           >

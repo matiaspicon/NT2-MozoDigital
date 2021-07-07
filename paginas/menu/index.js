@@ -98,7 +98,7 @@ export default function Index({ navigation }) {
           <TouchableOpacity
             style={styles.buttonAddItem}
             onPress={() =>
-              navigation.navigate("Agregar Item")
+              navigation.navigate("Agregar Item", {buscaMenu})
             }
           >
             <Text style={styles.addTitle}> Agregar Item</Text>

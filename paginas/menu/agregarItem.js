@@ -137,7 +137,6 @@ export default function AgregarItem({ navigation, route }) {
         .catch((error) => {
             console.log(error.response);
         });
-        
         navigation.navigate("Menu");
     }
   }

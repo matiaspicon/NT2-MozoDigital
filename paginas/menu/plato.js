@@ -9,13 +9,13 @@ import {
   TouchableOpacity
 } from "react-native";
 
-export default function Plato({ navigation, plato }) {
+export default function Plato({ navigation, plato, buscaMenu }) {
   //console.log("NAVIGATION PLATO", navigation);
   //console.log("PLATO:", plato);
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.push("Detalles Plato", { plato: plato })}
+      onPress={() => navigation.push("Detalles Plato", { plato: plato, buscaMenu })}
     >
       <View style={styles.platoContainer}>
         <View style={styles.platoImagenContainer}>

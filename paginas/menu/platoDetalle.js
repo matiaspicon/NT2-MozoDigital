@@ -37,6 +37,8 @@ export default function DetallePlato({ navigation, route }) {
   const [precioMod, setPrecioMod] = useState(precio);
   const [habilitadoMod, setHabilitadoMod] = useState(habilitado);
 
+  const buscaMenu = route.params.buscaMenu
+
   const context = useContext(GlobalContext);
 
   /*useEffect(() => {
@@ -205,9 +207,10 @@ export default function DetallePlato({ navigation, route }) {
     //window.confirm("sometext");
     if (confirm("Está seguro de continuar con la operación?")) {
       axios
-        .delete("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal + "/menu/" + _id, { headers: { Authorization: `Bearer ${context.user.token}` } })
-        .then((response) => { console.log(response); })
-        .catch((error) => { console.log(error.response); });
+      .delete("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal + "/menu/"+_id, {headers: { Authorization: `Bearer ${context.user.token}`}})
+      .then((response) => {console.log(response);})
+      .catch((error) => {console.log(error.response);});
+      buscaMenu();
       navigation.navigate("Menu");
     }
 
@@ -260,6 +263,7 @@ export default function DetallePlato({ navigation, route }) {
       .catch((error) => {
         console.log(error.response);
       });
+      buscaMenu();
     navigation.navigate("Home");
   }
 }

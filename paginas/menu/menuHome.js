@@ -54,6 +54,7 @@ export default function Index({ navigation }) {
     }
   }
 
+
   useFocusEffect(
     React.useCallback(() => {
       // Do something when the screen is focused.
@@ -90,7 +91,9 @@ export default function Index({ navigation }) {
                   (plato) =>
                     plato.categoria != "Bebidas" && plato.categoria != "Postres"
                 ),
-                categoria: "Platos"
+                categoria: "Platos",
+                buscaMenu
+
               })
             }
           >

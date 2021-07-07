@@ -9,7 +9,7 @@ import {
   TouchableHighlight,
   StyleSheet,
   Button,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import axios from "axios";
 import Contador from "../../components/contador/contador";
@@ -18,20 +18,12 @@ import MultiSelect from "react-multi-select-component";
 import GlobalContext from "../../components/global/context";
 import { useFocusEffect } from "@react-navigation/native";
 
-
 export default function DetalleUsuario({ navigation, route }) {
   console.log("ROUTE:", route);
-  const {
-    _id,
-    nombre,
-    apellido,
-    email,
-    rol,
-    restaurante,
-    sucursal,
-    mesas
-  } = route.params;
+  const { _id, nombre, apellido, email, rol, restaurante, sucursal, mesas } =
+    route.params.usuario;
 
+  const buscaUsuarios = route.params.buscaUsuarios;
   const context = useContext(GlobalContext);
 
   const [emailMod, setEmailMod] = useState(email);
@@ -43,13 +35,19 @@ export default function DetalleUsuario({ navigation, route }) {
   const [mesasOp, setMesasOp] = useState([]);
 
   async function buscaMesas() {
-    await axios.get("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal)
-      .then(response => {
-        console.log(response)
+    await axios
+      .get(
+        "https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" +
+          context.restaurante.idRestaurante +
+          "/sucursales/" +
+          context.restaurante.idSucursal
+      )
+      .then((response) => {
+        console.log(response);
         setMesasDisponibles(response.data.mesas);
       })
-      .catch(error => {
-        console.log(error.response)
+      .catch((error) => {
+        console.log(error.response);
       });
   }
 
@@ -65,15 +63,16 @@ export default function DetalleUsuario({ navigation, route }) {
     if (rol == "Mozo") {
       for (let index = 0; index <= mesas.length; index++) {
         if (mesasMod.length != mesas.length) {
-          mesasMod.push({ label: parseInt(mesas[index]), value: parseInt(mesas[index]) });
+          mesasMod.push({
+            label: parseInt(mesas[index]),
+            value: parseInt(mesas[index]),
+          });
         }
       }
     }
     console.log("Mesas OP:", mesasOp);
     console.log("Mesas MOD:", mesasMod);
   }, [rol]);
-
-
 
   if (context.user.rol != "Encargado") {
     return (
@@ -84,7 +83,6 @@ export default function DetalleUsuario({ navigation, route }) {
               <Text style={styles.descripcion}>{email}</Text>
               <Text style={styles.descripcion}>{nombre}</Text>
               <Text style={styles.descripcion}>{apellido}</Text>
-
             </View>
           </View>
         </View>
@@ -103,15 +101,12 @@ export default function DetalleUsuario({ navigation, route }) {
                 value={emailMod}
               />
 
-
               <Text>Nombre: </Text>
               <TextInput
                 style={styles.descripcion}
                 onChangeText={setNombreMod}
                 value={nombreMod}
               />
-
-
 
               <Text>Apellido: </Text>
               <TextInput
@@ -131,22 +126,19 @@ export default function DetalleUsuario({ navigation, route }) {
                 <Picker.Item label="Mozo" value="Mozo" />
               </Picker>
 
+              {rolMod == "Mozo"
+                ? [
+                    <Text>Mesas: </Text>,
+                    <MultiSelect
+                      options={mesasOp}
+                      value={mesasMod}
+                      onChange={setMesasMod}
+                      labelledBy="Mesas"
+                    />,
+                  ]
+                : null}
 
-              {(rolMod == "Mozo") ? [
-
-                <Text>Mesas: </Text>,
-                <MultiSelect
-                  options={mesasOp}
-                  value={mesasMod}
-                  onChange={setMesasMod}
-                  labelledBy="Mesas"
-                />
-              ] : null}
-
-
-
-
-              <Text>{'\n'}</Text>
+              <Text>{"\n"}</Text>
 
               <TouchableOpacity
                 style={styles.buttonModifyItem}
@@ -163,34 +155,38 @@ export default function DetalleUsuario({ navigation, route }) {
                 <Text style={styles.addTitle}>Modificar</Text>
               </TouchableOpacity>
 
-              <Text>{'\n'}</Text>
+              <Text>{"\n"}</Text>
 
               <TouchableOpacity
                 style={styles.buttonDeleteItem}
-                onPress={() =>
-                  borrarEmpleado()
-                }
+                onPress={() => borrarEmpleado()}
               >
                 <Text style={styles.deleteTitle}> Eliminar</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
-      </ScrollView >
+      </ScrollView>
     );
   }
-
 
   async function borrarEmpleado() {
     //window.confirm("sometext");
     if (confirm("Está seguro de continuar con la operación?")) {
       axios
-        .delete("https://gentle-hamlet-44521.herokuapp.com/api/usuarios/" + _id, { headers: { Authorization: `Bearer ${context.user.token}` } })
-        .then((response) => { console.log(response); })
-        .catch((error) => { console.log(error.response); });
+        .delete(
+          "https://gentle-hamlet-44521.herokuapp.com/api/usuarios/" + _id,
+          { headers: { Authorization: `Bearer ${context.user.token}` } }
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
       navigation.navigate("Empleados");
+      buscaUsuarios();
     }
-
 
     /*Alert.alert(
       "Atención!",
@@ -216,7 +212,7 @@ export default function DetalleUsuario({ navigation, route }) {
     rolMod,
     mesasMod
   ) {
-    mesasMod = mesasMod.map(element => element.value)
+    mesasMod = mesasMod.map((element) => element.value);
     const unEmpleado = {
       email: emailMod,
       nombre: nombreMod,
@@ -224,10 +220,11 @@ export default function DetalleUsuario({ navigation, route }) {
       rol: rolMod,
       mesas: mesasMod,
     };
-    console.log("Un Empleado: ",unEmpleado);
+    console.log("Un Empleado: ", unEmpleado);
 
     await axios
-      .put("https://gentle-hamlet-44521.herokuapp.com/api/usuarios/" + _id,
+      .put(
+        "https://gentle-hamlet-44521.herokuapp.com/api/usuarios/" + _id,
         unEmpleado,
         { headers: { Authorization: `Bearer ${context.user.token}` } }
       )
@@ -237,7 +234,7 @@ export default function DetalleUsuario({ navigation, route }) {
       .catch((error) => {
         console.log(error.response);
       });
-
+      buscaUsuarios();
     navigation.navigate("Empleados");
   }
 }
@@ -304,7 +301,7 @@ const styles = StyleSheet.create({
   descripcion: {
     lineHeight: 22,
     fontSize: 16,
-    borderWidth: 1
+    borderWidth: 1,
   },
   precio: {
     marginTop: 10,
@@ -338,7 +335,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     padding: 8,
     borderColor: "#EE3D3D",
-    borderWidth: 1
+    borderWidth: 1,
   },
   buttonDeleteItem: {
     alignItems: "center",
@@ -346,7 +343,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     padding: 8,
     borderColor: "#EE3D3D",
-    borderWidth: 1
+    borderWidth: 1,
   },
   deleteTitle: {
     color: "#EE3D3D",

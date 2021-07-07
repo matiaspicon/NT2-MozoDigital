@@ -64,14 +64,14 @@ export default function Empleados({ navigation }) {
         {usuarios &&
           usuarios.map((usuario, index) => (
             <View key={index} style={styles.empleadosContainer}>
-              <Usuario navigation={navigation} usuario={usuario} />
+              <Usuario navigation={navigation} usuario={usuario} buscaUsuarios={buscaUsuarios} />
             </View>
           ))}
 
           <TouchableOpacity
             style={styles.buttonAddItem}
             onPress={() =>
-              navigation.navigate("Agregar Empleado")
+              navigation.navigate("Agregar Empleado", {buscaUsuarios})
             }
           >
             <Text style={styles.addTitle}> Agregar Empleado</Text>

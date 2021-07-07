@@ -92,7 +92,7 @@ export default function ListaPedidos({ navigation, filtroRol }) {
             return dateB - dateA
           }).map((pedido, index) => (
             <TouchableOpacity
-              onPress={() => navigation.push("Detalles Pedido", pedido)}
+              onPress={() => navigation.push("Detalles Pedido", {pedido, buscarPedidos})}
               key={index}
             >
               <View style={styles.pedidosContainer}>

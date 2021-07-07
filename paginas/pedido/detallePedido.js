@@ -20,16 +20,15 @@ import GlobalContext from "../../components/global/context";
 import axios from "axios";
 
 export default function DetallePlato({ navigation, route }) {
-  console.log("ROUTE PEDIDO DETALLE:", route);
-  const { _id, fecha,  cliente, estado, total, mesa } = route.params;
+  //console.log("ROUTE PEDIDO DETALLE:", route);
+  const { _id, fecha,  cliente, estado, total, mesa } = route.params.pedido;
+  const buscarPedidos = route.params.buscarPedidos;
   const context = useContext(GlobalContext);
-  let items = route.params.menuItems;
-  let badge;
-  //console.log(route.params.menuItems);
+  let items = route.params.pedido.menuItems;
 
-  const [nuevoEstado, setNuevoEstado] = useState("");
+  const [nuevoEstado, setNuevoEstado] = useState(estado);
 
-  console.log("items:", items);
+  //console.log("items:", items);
 
   useEffect(() => {
     navigation.setOptions({ title: `${context.user.rol} - Detalles Pedido` });
@@ -53,7 +52,7 @@ export default function DetallePlato({ navigation, route }) {
       .catch((error) => {
         console.log(error.response);
       });
-
+    buscarPedidos();
     navigation.navigate("Listado Pedidos");
   }
 

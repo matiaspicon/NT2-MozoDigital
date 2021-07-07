@@ -10,7 +10,7 @@ import {
   SafeAreaView
 } from "react-native";
 
-export default function Usuario({ navigation, usuario }) {
+export default function Usuario({ navigation, usuario, buscaUsuarios }) {
   //console.log("NAVIGATION", navigation);
   //console.log("PLATO:", plato);
 
@@ -18,7 +18,7 @@ export default function Usuario({ navigation, usuario }) {
     <SafeAreaView>
     <View style={styles.container}>
             <TouchableOpacity
-              onPress={() => navigation.push("Detalle Usuario", usuario)}
+              onPress={() => navigation.push("Detalle Usuario", {usuario, buscaUsuarios})}
             >
                 <View style={{marginVertical: 10}}>
                 

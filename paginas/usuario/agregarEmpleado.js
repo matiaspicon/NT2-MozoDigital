@@ -16,11 +16,9 @@ import axios from "axios";
 import GlobalContext from "../../components/global/context";
 import MultiSelect from "react-multi-select-component";
 
-
 export default function AgregarEmpleado({ navigation, route }) {
-    
     const context = useContext(GlobalContext);
-
+    const buscaUsuarios = route.params.buscaUsuarios;
     const [email, setEmail] = useState();
     const [nombre, setNombre] = useState();
     const [apellido, setApellido] = useState();
@@ -30,19 +28,22 @@ export default function AgregarEmpleado({ navigation, route }) {
     const [mesasDisponibles, setMesasDisponibles] = useState();
     const [mesasOp, setMesasOp] = useState([]);
 
-
     async function buscaMesas() {
-        await axios.get("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal)
-            .then(response => {
-                console.log(response)
+        await axios
+            .get(
+                "https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" +
+                context.restaurante.idRestaurante +
+                "/sucursales/" +
+                context.restaurante.idSucursal
+            )
+            .then((response) => {
+                console.log(response);
                 setMesasDisponibles(response.data.mesas);
             })
-            .catch(error => {
-                console.log(error.response)
+            .catch((error) => {
+                console.log(error.response);
             });
     }
-
-
 
     useEffect(() => {
         buscaMesas();
@@ -51,9 +52,8 @@ export default function AgregarEmpleado({ navigation, route }) {
                 if (mesasOp.length != mesasDisponibles) {
                     mesasOp.push({ label: index, value: index });
                 }
-            }
-        }
-    }, [rol]);
+            }} [rol];
+
 
 
 
@@ -128,46 +128,117 @@ export default function AgregarEmpleado({ navigation, route }) {
             </ScrollView>
         );
     }
+}, [rol]);
 
-    async function agregarEmpleado(
-        email,
-        nombre,
-        apellido,
-        password,
-        rol,
-        mesas
+if (context.user.rol == "Encargado") {
+    return (
+        <ScrollView style={{ flex: 1, flexDirection: "column" }}>
+            <View style={styles.platoDetallesContainer}>
+                <View style={styles.platoDetails}>
+                    <View styles={styles.detalle}>
+                        <Text>Email: </Text>
+                        <TextInput style={styles.descripcion} onChangeText={setEmail} />
+
+                        <Text>Nombre: </Text>
+                        <TextInput style={styles.descripcion} onChangeText={setNombre} />
+
+                        <Text>Apellido: </Text>
+                        <TextInput
+                            style={styles.descripcion}
+                            onChangeText={setApellido}
+                        />
+
+                        <Text>Password: </Text>
+                        <TextInput
+                            style={styles.descripcion}
+                            onChangeText={setPassword}
+                        />
+
+                        <Text>Rol: </Text>
+                        <Picker
+                            onValueChange={(rol, itemIndex) => setRol(rol)}
+                            selectedValue={rol}
+                            style={{ width: 200 }}
+                        >
+                            <Picker.Item label="Encargado" value="Encargado" />
+                            <Picker.Item label="Cocinero" value="Cocinero" />
+                            <Picker.Item label="Mozo" value="Mozo" />
+                        </Picker>
+
+                        {rol == "Mozo"
+                            ? [
+                                <Text>Mesas: </Text>,
+                                <MultiSelect
+                                    options={mesasOp}
+                                    value={mesas}
+                                    onChange={setMesas}
+                                    labelledBy="Mesas"
+                                />,
+                            ]
+                            : null}
+
+                        <Text>{"\n"}</Text>
+
+                        <TouchableOpacity
+                            style={styles.buttonAddItem}
+                            onPress={() =>
+                                agregarEmpleado(email, nombre, apellido, password, rol, mesas)
+                            }
+                        >
+                            <Text style={styles.addTitle}>Agregar Empleado</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        </ScrollView>
+    );
+}
+
+async function agregarEmpleado(
+    email,
+    nombre,
+    apellido,
+    password,
+    rol,
+    mesas
+) {
+    mesas = mesas.map((element) => element.value);
+    const unEmpleado = {
+        email: email,
+        nombre: nombre,
+        apellido: apellido,
+        password: password,
+        rol: rol,
+        restaurante: context.restaurante.idRestaurante,
+        sucursal: context.restaurante.idSucursal,
+        mesas: mesas,
+    };
+
+    console.log(unEmpleado);
+
+    if (
+        unEmpleado.email != null &&
+        unEmpleado.nombre != null &&
+        unEmpleado.apellido != null &&
+        unEmpleado.password != null &&
+        unEmpleado.rol != null
     ) {
-        mesas = mesas.map(element => element.value)
-        const unEmpleado = {
-            email: email,
-            nombre: nombre,
-            apellido: apellido,
-            password: password,
-            rol: rol,
-            restaurante: context.restaurante.idRestaurante,
-            sucursal: context.restaurante.idSucursal,
-            mesas: mesas,
-        };
-
-        console.log(unEmpleado);
-
-        if (unEmpleado.email != null && unEmpleado.nombre != null && unEmpleado.apellido != null && unEmpleado.password != null && unEmpleado.rol != null) {
-            await axios
-                .post(
-                    "https://gentle-hamlet-44521.herokuapp.com/api/usuarios/empleado",
-                    unEmpleado,
-                    { headers: { Authorization: `Bearer ${context.user.token}` } }
-                )
-                .then((response) => {
-                    console.log(response);
-                })
-                .catch((error) => {
-                    console.log(error.response);
-                });
-
-            navigation.navigate("Empleados");
-        }
+        await axios
+            .post(
+                "https://gentle-hamlet-44521.herokuapp.com/api/usuarios/empleado",
+                unEmpleado,
+                { headers: { Authorization: `Bearer ${context.user.token}` } }
+            )
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error.response);
+            });
+        buscaUsuarios();
+        navigation.navigate("Empleados");
     }
+}
 }
 
 const styles = StyleSheet.create({
@@ -215,4 +286,8 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         fontSize: 16,
     },
+    elevation: 5,
+    shadowOpacity: 0.7,
+    shadowRadius: 0,
+    fontSize: 16,
 });

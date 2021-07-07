@@ -88,7 +88,7 @@ export default function Index({ navigation }) {
                 navigation: navigation,
                 platos: platos.filter(
                   (plato) =>
-                    plato.categoria != "bebida" && plato.categoria != "postre"
+                    plato.categoria != "Bebidas" && plato.categoria != "Postres"
                 ),
                 categoria: "Platos"
               })
@@ -119,7 +119,7 @@ export default function Index({ navigation }) {
             onPress={() =>
               navigation.push("Menu", {
                 navigation: navigation,
-                platos: platos.filter((plato) => plato.categoria == "bebida"),
+                platos: platos.filter((plato) => plato.categoria == "Bebidas"),
                 categoria: "Bebidas"
               })
             }
@@ -149,7 +149,7 @@ export default function Index({ navigation }) {
             onPress={() =>
               navigation.push("Menu", {
                 navigation: navigation,
-                platos: platos.filter((plato) => plato.categoria == "postre"),
+                platos: platos.filter((plato) => plato.categoria == "Postres"),
                 categoria: "Postres"
               })
             }

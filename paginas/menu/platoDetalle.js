@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import Contador from "../../components/contador/contador";
+import { Picker } from "@react-native-picker/picker";
 import GlobalContext from "../../components/global/context";
 
 
@@ -102,11 +103,16 @@ export default function DetallePlato({ navigation, route }) {
                 value={tituloMod}
               />
 
-              <TextInput
-                style={styles.categoria}
-                onChangeText={setCategoriaMod}
-                value={categoriaMod}
-              />
+              <Text>Categoria: </Text>
+              <Picker
+                onValueChange={(categoria, itemIndex) => setCategoriaMod(categoria)}
+                selectedValue={categoriaMod}
+                style={{ width: 200 }}
+              >
+                <Picker.Item label="Platos" value="Platos" />
+                <Picker.Item label="Bebidas" value="Bebidas" />
+                <Picker.Item label="Postres" value="Postres" />
+              </Picker>
 
               <TextInput
                 style={styles.url_imagenMod}
@@ -199,9 +205,9 @@ export default function DetallePlato({ navigation, route }) {
     //window.confirm("sometext");
     if (confirm("Está seguro de continuar con la operación?")) {
       axios
-      .delete("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal + "/menu/"+_id, {headers: { Authorization: `Bearer ${context.user.token}`}})
-      .then((response) => {console.log(response);})
-      .catch((error) => {console.log(error.response);});
+        .delete("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal + "/menu/" + _id, { headers: { Authorization: `Bearer ${context.user.token}` } })
+        .then((response) => { console.log(response); })
+        .catch((error) => { console.log(error.response); });
       navigation.navigate("Menu");
     }
 
@@ -243,8 +249,8 @@ export default function DetallePlato({ navigation, route }) {
 
     await axios
       .put(
-        "https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal+ "/menu/" +
-          _id,
+        "https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal + "/menu/" +
+        _id,
         unPlato,
         { headers: { Authorization: `Bearer ${context.user.token}` } }
       )
@@ -351,7 +357,7 @@ const styles = StyleSheet.create({
   buttonModifyItem: {
     alignItems: "center",
     backgroundColor: "#EE3D3D",
-    borderRadius: 0,
+    borderRadius: 40,
     padding: 8,
     borderColor: "#EE3D3D",
     borderWidth: 1
@@ -359,7 +365,7 @@ const styles = StyleSheet.create({
   buttonDeleteItem: {
     alignItems: "center",
     backgroundColor: "white",
-    borderRadius: 0,
+    borderRadius: 40,
     padding: 8,
     borderColor: "#EE3D3D",
     borderWidth: 1

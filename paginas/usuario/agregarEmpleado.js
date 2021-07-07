@@ -60,9 +60,9 @@ export default function AgregarEmpleado({ navigation, route }) {
     if (context.user.rol == "Encargado") {
         return (
             <ScrollView style={{ flex: 1, flexDirection: "column" }}>
-                <View style={styles.platoDetallesContainer}>
+                <View style={styles.empleadoDetallesContainer}>
 
-                    <View style={styles.platoDetails}>
+                    <View style={styles.empleadoDetails}>
                         <View styles={styles.detalle}>
                             <Text>Email: </Text>
                             <TextInput style={styles.descripcion}
@@ -171,20 +171,13 @@ export default function AgregarEmpleado({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-    pedidosCard: {
-        flexDirection: "row",
-        padding: 5,
-    },
-    pedidoLabel: {
-        fontWeight: "bold",
-    },
-    platoDetallesContainer: {
+    empleadoDetallesContainer: {
         //justifyContent: "center",
         alignItems: "center",
         flex: 1,
         marginTop: 20,
     },
-    platoDetails: {
+    empleadoDetails: {
         marginTop: 10,
         paddingHorizontal: 20,
         paddingTop: 20,
@@ -211,26 +204,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         borderWidth: 1
     },
-    precio: {
-        marginTop: 0,
-        fontWeight: "bold",
-        fontSize: 16,
-        color: "#EE3D3D",
-        marginHorizontal: 0,
-    },
-    precioMod: {
-        fontWeight: "bold",
-        fontSize: 17,
-        color: "#EE3D3D",
-        borderWidth: 1
-    },
-    checkbox: {
-        alignSelf: "center",
-    },
     buttonAddItem: {
         alignItems: "center",
         backgroundColor: "#EE3D3D",
-        borderRadius: 0,
+        borderRadius: 40,
         padding: 8,
     },
     addTitle: {

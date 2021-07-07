@@ -9,7 +9,7 @@ export default function ListadoPedidos({ navigation }) {
   const context = useContext(GlobalContext);
   
   function filtroRol(pedido) {
-    return pedido.estado == "Pedido" || pedido.estado == "En preparacion";
+    return pedido.restaurante == context.restaurante.idRestaurante && pedido.sucursal == context.restaurante.idSucursal;
   }
 
   useEffect(() => {

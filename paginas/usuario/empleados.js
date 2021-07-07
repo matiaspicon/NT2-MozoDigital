@@ -63,7 +63,7 @@ export default function Empleados({ navigation }) {
         <ScrollView>
         {usuarios &&
           usuarios.map((usuario, index) => (
-            <View key={index} style={styles.pedidosContainer}>
+            <View key={index} style={styles.empleadosContainer}>
               <Usuario navigation={navigation} usuario={usuario} />
             </View>
           ))}
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  pedidosContainer: {
+  empleadosContainer: {
     //elevation: 15,
     borderRadius: 10,
     backgroundColor: "white",
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     backgroundColor: "#EE3D3D",
-    borderRadius: 0,
+    borderRadius: 40,
     padding: 8,
     margin: 10,
     height: 40,

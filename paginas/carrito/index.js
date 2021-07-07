@@ -166,13 +166,13 @@ export default function Carrito({ navigation, route }) {
       estado: "Pedido",
       restaurante: context.restaurante.idRestaurante,
       sucursal: context.restaurante.idSucursal + "",
-      mesa: context.restaurante.mesa,
+      mesa: context.restaurante.mesa._id,
     };
 
     console.log("Pedido: ", pedido);
     context.setCarritoItems([]);
     axios
-      .post("https://gentle-hamlet-44521.herokuapp.com/api/pedidos", pedido, {
+      .post("http://localhost:3000/api/pedidos", pedido, {
         headers: { Authorization: `Bearer ${context.user.token}` },
       })
       .then((response) => {

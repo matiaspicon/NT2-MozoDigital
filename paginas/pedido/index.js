@@ -30,6 +30,8 @@ export default function ListaPedidos({ navigation, filtroRol }) {
   const context = useContext(GlobalContext);
   const [pedidos, setPedidos] = useState([]);
 
+  console.log("ACA LOS DATOS DEL CONTEXT",context);
+
   function devolverTotal(pedido) {
     let total = 0;
     pedido.menuItems.forEach((carritoItem) => {

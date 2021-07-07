@@ -65,7 +65,6 @@ export default function DetallePlato({ navigation, route }) {
           selectedValue={nuevoEstado}
           style={{ width: 200 }}
         >
-          <Picker.Item label="Selecciona uno" value="En preparacion" />
           <Picker.Item label="En preparacion" value="En preparacion" />
           <Picker.Item label="Listo" value="Listo" />
           <Picker.Item label="Entregado" value="Entregado" />
@@ -76,8 +75,9 @@ export default function DetallePlato({ navigation, route }) {
       return (
         <Picker
           onValueChange={(nuevoEstado, itemIndex) =>setNuevoEstado(nuevoEstado)}
+          selectedValue={nuevoEstado}
+          style={{ width: 200 }}
         >
-          <Picker.Item label="Selecciona uno" value="En preparacion" />
           <Picker.Item label="En preparacion" value="En preparacion" />
           <Picker.Item label="Listo" value="Listo" />
         </Picker>
@@ -87,8 +87,9 @@ export default function DetallePlato({ navigation, route }) {
       return (
         <Picker
           onValueChange={(nuevoEstado, itemIndex) => setNuevoEstado(nuevoEstado)}
+          selectedValue={nuevoEstado}
+          style={{ width: 200 }}
         >
-          <Picker.Item label="Selecciona uno" value="Listo" />
           <Picker.Item label="Listo" value="Listo" />
           <Picker.Item label="Entregado" value="Entregado" />
         </Picker>

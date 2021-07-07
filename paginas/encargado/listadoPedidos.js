@@ -10,7 +10,7 @@ export default function Index({ navigation }) {
   console.log("LISTADO PEDIDOS:", navigation);
 
   function filtroRol(pedido){
-    return pedido.estado == "Pedido" || pedido.estado == "En preparacion" || pedido.estado == "Listo"
+    return pedido.restaurante == context.restaurante.idRestaurante && pedido.sucursal == context.restaurante.idSucursal
   }
 
   useEffect(() => {

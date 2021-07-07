@@ -13,7 +13,7 @@ export default function ListadoPedidos({ navigation }) {
   }, );
 
   function filtroRol(pedido){
-    return pedido.estado == "Listo"
+    return pedido.restaurante == context.restaurante.idRestaurante && pedido.sucursal == context.restaurante.idSucursal
   }
 
   return (

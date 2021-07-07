@@ -17,6 +17,7 @@ import Cocinero from "./paginas/cocinero/index";
 import Mozo from "./paginas/mozo/index";
 import CodigoQR from "./paginas/codigoqr/index"
 import IngresarMesa from "./paginas/cliente/ingresarMesa"
+import Register from "./paginas/cliente/agregarCliente"
 import { NavigationContainer } from "@react-navigation/native";
 import GlobalContext from "./components/global/context";
 
@@ -56,7 +57,7 @@ export default function App() {
           <loginStack.Screen name="Login" component={Login} />
           <loginStack.Screen name="CodigoQR" component={CodigoQR} />
           <loginStack.Screen name="IngresarMesa" component={IngresarMesa} />
-          <loginStack.Screen name="Register" component={IngresarMesa} />
+          <loginStack.Screen name="Register" component={Register} />
           <loginStack.Screen name="Cliente" component={Cliente} />
           <loginStack.Screen name="Encargado" component={Encargado} />
           <loginStack.Screen name="Cocinero" component={Cocinero} />

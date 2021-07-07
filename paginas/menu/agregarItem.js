@@ -12,6 +12,7 @@ import {
   ScrollView
 } from "react-native";
 import axios from "axios";
+import { Picker } from "@react-native-picker/picker";
 import GlobalContext from "../../components/global/context";
 
 export default function AgregarItem({ navigation, route }) {
@@ -32,36 +33,40 @@ export default function AgregarItem({ navigation, route }) {
 
           <View style={styles.platoDetails}>
             <View styles={styles.detalle}>
-            <Text>Titulo:</Text>
+              <Text>Titulo:</Text>
               <TextInput
                 style={styles.descripcion}
                 onChangeText={setTituloMod}
                 value={tituloMod}
               />
 
-            <Text>Categoria:</Text>
-              <TextInput
-                style={styles.descripcion}
-                onChangeText={setCategoriaMod}
-                value={categoriaMod}
-              />
+              <Text>Categoria: </Text>
+              <Picker
+                onValueChange={(categoria, itemIndex) => setCategoriaMod(categoria)}
+                selectedValue={categoriaMod}
+                style={{ width: 200 }}
+              >
+                <Picker.Item label="Platos" value="Platos" />
+                <Picker.Item label="Bebidas" value="Bebidas" />
+                <Picker.Item label="Postres" value="Postres" />
+              </Picker>
 
-            <Text>Imagen:</Text>
+              <Text>Imagen:</Text>
               <TextInput
                 style={styles.descripcion}
                 onChangeText={setUrl_imagenMod}
                 value={url_imagenMod}
                 adjustsFontSizeToFit={true}
               />
-        
-            <Text>Descripción:</Text>
+
+              <Text>Descripción:</Text>
               <TextInput
                 style={styles.descripcion}
                 onChangeText={setDescripcionMod}
                 value={descripcionMod}
               />
 
-            <Text>Precio:</Text>
+              <Text>Precio:</Text>
               <Text style={styles.precio}>
                 $
                 <TextInput
@@ -71,10 +76,10 @@ export default function AgregarItem({ navigation, route }) {
                 />
               </Text>
 
-                <Text>{'\n'}</Text>
+              <Text>{'\n'}</Text>
 
               <Text>
-                Habilitado: 
+                Habilitado:
                 <CheckBox
                   style={styles.checkbox}
                   onValueChange={setHabilitadoMod}
@@ -123,22 +128,22 @@ export default function AgregarItem({ navigation, route }) {
       precio: precioMod,
       habilitado: habilitadoMod,
     };
-    
+
     if (unPlato.titulo != null && unPlato.precio != null) {
-        await axios
+      await axios
         .post(
-        "https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal + "/menu/",
-        unPlato,
-        { headers: { Authorization: `Bearer ${context.user.token}` } }
+          "https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal + "/menu/",
+          unPlato,
+          { headers: { Authorization: `Bearer ${context.user.token}` } }
         )
         .then((response) => {
-            console.log(response);
+          console.log(response);
         })
         .catch((error) => {
-            console.log(error.response);
+          console.log(error.response);
         });
-        
-        navigation.navigate("Menu");
+
+      navigation.navigate("Menu");
     }
   }
 }
@@ -195,7 +200,7 @@ const styles = StyleSheet.create({
   buttonAddItem: {
     alignItems: "center",
     backgroundColor: "#EE3D3D",
-    borderRadius: 0,
+    borderRadius: 40,
     padding: 8,
   },
   addTitle: {

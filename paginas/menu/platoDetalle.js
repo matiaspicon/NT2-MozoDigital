@@ -46,6 +46,92 @@ export default function DetallePlato({ navigation, route }) {
   }, []);
   */
 
+  function agregarCarritoItem(carritoItem) {
+    if (
+      context.carritoItems.find((itemFind) => itemFind._id == carritoItem._id)
+    ) {
+      let carritoPivot = [...context.carritoItems];
+      carritoPivot.find(
+        (itemFind) => itemFind._id == carritoItem._id
+      ).cantidad += carritoItem.cantidad;
+      context.setCarritoItems(carritoPivot);
+    } else {
+      context.setCarritoItems([...context.carritoItems, carritoItem]);
+    }
+
+    navigation.navigate("Menu");
+    //navigation.push("Menu");
+  }
+
+  function convertirAPesos(total) {
+    return "$" + total.toLocaleString("de-DE");
+  }
+
+  async function borrarItem() {
+    //window.confirm("sometext");
+    if (confirm("Está seguro de continuar con la operación?")) {
+      axios
+      .delete("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal + "/menu/"+_id, {headers: { Authorization: `Bearer ${context.user.token}`}})
+      .then((response) => {console.log(response);})
+      .catch((error) => {console.log(error.response);});
+      buscaMenu();
+      navigation.navigate("Menu");
+    }
+
+
+    /*Alert.alert(
+      "Atención!",
+      "Está seguro de continuar con la operación?",
+      [
+        {
+          text: "Cancelar",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Aceptar", onPress: () => axios
+      .delete("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu"+_id, pedido, {headers: { Authorization: `Bearer ${context.user.token}`}})
+      .then((response) => {console.log(response);})
+      .catch((error) => {console.log(error.response);}); }
+      ]
+    );*/
+  }
+
+  async function modificarItem(
+    tituloMod,
+    categoriaMod,
+    url_imagenMod,
+    descripcionMod,
+    precioMod,
+    habilitadoMod
+  ) {
+    const unPlato = {
+      titulo: tituloMod,
+      categoria: categoriaMod,
+      url_imagen: url_imagenMod,
+      descripcion: descripcionMod,
+      precio: precioMod,
+      habilitado: habilitadoMod,
+    };
+    console.log(unPlato);
+
+    await axios
+      .put(
+        "https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal + "/menu/" +
+        _id,
+        unPlato,
+        { headers: { Authorization: `Bearer ${context.user.token}` } }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+      buscaMenu();
+    navigation.navigate("Home");
+  }
+
+
   if (context.user.rol != "Encargado") {
     return (
       <ScrollView style={{ flex: 1, flexDirection: "column" }}>
@@ -182,91 +268,7 @@ export default function DetallePlato({ navigation, route }) {
       </ScrollView>
     );
   }
-  function agregarCarritoItem(carritoItem) {
-    if (
-      context.carritoItems.find((itemFind) => itemFind._id == carritoItem._id)
-    ) {
-      let carritoPivot = [...context.carritoItems];
-      carritoPivot.find(
-        (itemFind) => itemFind._id == carritoItem._id
-      ).cantidad += carritoItem.cantidad;
-      context.setCarritoItems(carritoPivot);
-    } else {
-      context.setCarritoItems([...context.carritoItems, carritoItem]);
-    }
-
-    navigation.navigate("Menu");
-    //navigation.push("Menu");
-  }
-
-  function convertirAPesos(total) {
-    return "$" + total.toLocaleString("de-DE");
-  }
-
-  async function borrarItem() {
-    //window.confirm("sometext");
-    if (confirm("Está seguro de continuar con la operación?")) {
-      axios
-      .delete("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal + "/menu/"+_id, {headers: { Authorization: `Bearer ${context.user.token}`}})
-      .then((response) => {console.log(response);})
-      .catch((error) => {console.log(error.response);});
-      buscaMenu();
-      navigation.navigate("Menu");
-    }
-
-
-    /*Alert.alert(
-      "Atención!",
-      "Está seguro de continuar con la operación?",
-      [
-        {
-          text: "Cancelar",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "Aceptar", onPress: () => axios
-      .delete("https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/60ad9d02a7ec12baac4d59e1/sucursales/0/menu"+_id, pedido, {headers: { Authorization: `Bearer ${context.user.token}`}})
-      .then((response) => {console.log(response);})
-      .catch((error) => {console.log(error.response);}); }
-      ]
-    );*/
-  }
-
-  async function modificarItem(
-    tituloMod,
-    categoriaMod,
-    url_imagenMod,
-    descripcionMod,
-    precioMod,
-    habilitadoMod
-  ) {
-    const unPlato = {
-      titulo: tituloMod,
-      categoria: categoriaMod,
-      url_imagen: url_imagenMod,
-      descripcion: descripcionMod,
-      precio: precioMod,
-      habilitado: habilitadoMod,
-    };
-    console.log(unPlato);
-
-    await axios
-      .put(
-        "https://gentle-hamlet-44521.herokuapp.com/api/restaurantes/" + context.restaurante.idRestaurante + "/sucursales/" + context.restaurante.idSucursal + "/menu/" +
-        _id,
-        unPlato,
-        { headers: { Authorization: `Bearer ${context.user.token}` } }
-      )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-      buscaMenu();
-    navigation.navigate("Home");
-  }
-}
+}  
 
 const styles = StyleSheet.create({
   details: {

@@ -44,7 +44,7 @@ export default function DetalleUsuario({ navigation, route }) {
       )
       .then((response) => {
         console.log(response);
-        setMesasDisponibles(response.data.mesas);
+        setMesasDisponibles(response.data.mesas.length);
       })
       .catch((error) => {
         console.log(error.response);
@@ -73,6 +73,40 @@ export default function DetalleUsuario({ navigation, route }) {
     console.log("Mesas OP:", mesasOp);
     console.log("Mesas MOD:", mesasMod);
   }, [rol]);
+
+  async function modificarItem(
+    emailMod,
+    nombreMod,
+    apellidoMod,
+    rolMod,
+    mesasMod
+  ) {
+    mesasMod = mesasMod.map((element) => element.value);
+    const unEmpleado = {
+      email: emailMod,
+      nombre: nombreMod,
+      apellido: apellidoMod,
+      rol: rolMod,
+      mesas: mesasMod,
+    };
+    console.log("Un Empleado: ", unEmpleado);
+
+    await axios
+      .put(
+        "https://gentle-hamlet-44521.herokuapp.com/api/usuarios/" + _id,
+        unEmpleado,
+        { headers: { Authorization: `Bearer ${context.user.token}` } }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+      buscaUsuarios();
+    navigation.navigate("Empleados");
+  }
+
 
   if (context.user.rol != "Encargado") {
     return (
@@ -204,40 +238,8 @@ export default function DetalleUsuario({ navigation, route }) {
           ]
           );*/
   }
-
-  async function modificarItem(
-    emailMod,
-    nombreMod,
-    apellidoMod,
-    rolMod,
-    mesasMod
-  ) {
-    mesasMod = mesasMod.map((element) => element.value);
-    const unEmpleado = {
-      email: emailMod,
-      nombre: nombreMod,
-      apellido: apellidoMod,
-      rol: rolMod,
-      mesas: mesasMod,
-    };
-    console.log("Un Empleado: ", unEmpleado);
-
-    await axios
-      .put(
-        "https://gentle-hamlet-44521.herokuapp.com/api/usuarios/" + _id,
-        unEmpleado,
-        { headers: { Authorization: `Bearer ${context.user.token}` } }
-      )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-      buscaUsuarios();
-    navigation.navigate("Empleados");
-  }
 }
+
 
 const styles = StyleSheet.create({
   details: {
@@ -332,7 +334,7 @@ const styles = StyleSheet.create({
   buttonModifyItem: {
     alignItems: "center",
     backgroundColor: "#EE3D3D",
-    borderRadius: 0,
+    borderRadius: 40,
     padding: 8,
     borderColor: "#EE3D3D",
     borderWidth: 1,
@@ -340,7 +342,7 @@ const styles = StyleSheet.create({
   buttonDeleteItem: {
     alignItems: "center",
     backgroundColor: "white",
-    borderRadius: 0,
+    borderRadius: 40,
     padding: 8,
     borderColor: "#EE3D3D",
     borderWidth: 1,

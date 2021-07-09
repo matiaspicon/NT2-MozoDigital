@@ -9,9 +9,7 @@ import GlobalContext from "../../components/global/context";
 export default function Index({ navigation }) {
 
   const context = useContext(GlobalContext);
- 
-  console.log("NAVIGATION HISTORICOS:", navigation);
-  const [filtro, setFiltro] = useState("")
+   const [filtro, setFiltro] = useState("")
   function filtroRol(pedido) {
     return pedido.restaurante == context.restaurante.idRestaurante && pedido.sucursal == context.restaurante.idSucursal || (filtro && pedido.titulo.toLowerCase() == filtro.toLowerCase())
   }

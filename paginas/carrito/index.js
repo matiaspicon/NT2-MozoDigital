@@ -42,6 +42,7 @@ export default function Carrito({ navigation, route }) {
           //leftOpenValue={75}
           rightOpenValue={-65}
           disableRightSwipe
+          keyExtractor={(item) => item._id}
         />
       </View>
     );
@@ -54,6 +55,7 @@ export default function Carrito({ navigation, route }) {
         cantidad;
       context.setCarritoItems(carritoPivot);
     };
+
     return (
       <TouchableHighlight>
         <View style={styles.cartCard}>
@@ -154,7 +156,6 @@ export default function Carrito({ navigation, route }) {
 
   function submitPedido() {
     const pedido = {
-      cliente: context.user._id,
       menuItems: context.carritoItems.map((item) => {
         return {
           _id: item._id,
@@ -166,21 +167,24 @@ export default function Carrito({ navigation, route }) {
       estado: "Pedido",
       restaurante: context.restaurante.idRestaurante,
       sucursal: context.restaurante.idSucursal + "",
-      mesa: context.restaurante.mesa._id,
+      mesa: context.restaurante.mesa,
     };
 
     console.log("Pedido: ", pedido);
-    context.setCarritoItems([]);
+    
     axios
       .post("https://gentle-hamlet-44521.herokuapp.com/api/pedidos", pedido, {
         headers: { Authorization: `Bearer ${context.user.token}` },
       })
       .then((response) => {
         console.log(response);
+        context.setCarritoItems([]);
+        
       })
       .catch((error) => {
         console.log(error.response);
       });
+      navigation.navigate("Pedidos");
   }
 
   function devolverTotal() {

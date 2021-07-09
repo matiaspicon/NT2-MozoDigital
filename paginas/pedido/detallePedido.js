@@ -21,7 +21,7 @@ import axios from "axios";
 
 export default function DetallePlato({ navigation, route }) {
   //console.log("ROUTE PEDIDO DETALLE:", route);
-  const { _id, fecha,  cliente, estado, total, mesa } = route.params.pedido;
+  const { _id, fecha, cliente, estado, total, mesa } = route.params.pedido;
   const buscarPedidos = route.params.buscarPedidos;
   const context = useContext(GlobalContext);
   let items = route.params.pedido.menuItems;
@@ -60,10 +60,13 @@ export default function DetallePlato({ navigation, route }) {
     if (context.user.rol == "Encargado") {
       return (
         <Picker
-          onValueChange={(nuevoEstado, itemIndex) => setNuevoEstado(nuevoEstado)}
+          onValueChange={(nuevoEstado, itemIndex) =>
+            setNuevoEstado(nuevoEstado)
+          }
           selectedValue={nuevoEstado}
           style={{ width: 200 }}
         >
+          <Picker.Item label="Pedido" value="Pedido" />
           <Picker.Item label="En preparacion" value="En preparacion" />
           <Picker.Item label="Listo" value="Listo" />
           <Picker.Item label="Entregado" value="Entregado" />
@@ -73,7 +76,9 @@ export default function DetallePlato({ navigation, route }) {
     if (context.user.rol == "Cocinero") {
       return (
         <Picker
-          onValueChange={(nuevoEstado, itemIndex) =>setNuevoEstado(nuevoEstado)}
+          onValueChange={(nuevoEstado, itemIndex) =>
+            setNuevoEstado(nuevoEstado)
+          }
           selectedValue={nuevoEstado}
           style={{ width: 200 }}
         >
@@ -85,7 +90,9 @@ export default function DetallePlato({ navigation, route }) {
     if (context.user.rol == "Mozo") {
       return (
         <Picker
-          onValueChange={(nuevoEstado, itemIndex) => setNuevoEstado(nuevoEstado)}
+          onValueChange={(nuevoEstado, itemIndex) =>
+            setNuevoEstado(nuevoEstado)
+          }
           selectedValue={nuevoEstado}
           style={{ width: 200 }}
         >
@@ -93,6 +100,9 @@ export default function DetallePlato({ navigation, route }) {
           <Picker.Item label="Entregado" value="Entregado" />
         </Picker>
       );
+    }
+    if (context.user.rol == "Cliente") {
+      return <Text>{estado}</Text>;
     }
   }
 
@@ -131,7 +141,10 @@ export default function DetallePlato({ navigation, route }) {
         {items &&
           items.map((item, index) => (
             <View key={index} style={styles.pedidosCard}>
-              <Text> - {item.titulo} x {item.cantidad}</Text>
+              <Text>
+                {" "}
+                - {item.titulo} x {item.cantidad}
+              </Text>
             </View>
           ))}
 
@@ -139,12 +152,14 @@ export default function DetallePlato({ navigation, route }) {
           <Text style={styles.pedidoLabel}>Total: ${total} </Text>
         </View>
 
-        <TouchableOpacity
-          style={styles.realizarPedidoBtn}
-          onPress={modificarEstado}
-        >
-          <Text style={styles.realizarPedidoTitle}>Modificar Estado</Text>
-        </TouchableOpacity>
+        {context.user.rol != "Cliente" && (
+          <TouchableOpacity
+            style={styles.realizarPedidoBtn}
+            onPress={modificarEstado}
+          >
+            <Text style={styles.realizarPedidoTitle}>Modificar Estado</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );

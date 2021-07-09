@@ -43,7 +43,9 @@ export default function Login({ navigation, route }) {
         console.log("Usuario: ", response.data.usuario);
 
         if (response.data.usuario.rol == "Mozo") {
-          context.setUser({nombre: response.data.usuario.nombre,
+          context.setUser({
+            _id: response.data.usuario._id,
+            nombre: response.data.usuario.nombre,
             mail: response.data.usuario.email,
             rol: response.data.usuario.rol,
             token: response.data.token,
@@ -52,6 +54,7 @@ export default function Login({ navigation, route }) {
         }
 
         context.setUser({
+          _id: response.data.usuario._id,
           nombre: response.data.usuario.nombre,
           mail: response.data.usuario.email,
           rol: response.data.usuario.rol,
@@ -67,7 +70,6 @@ export default function Login({ navigation, route }) {
         }
 
         if (response.data.usuario.rol != "Cliente") {
-          console.log("HOLA DESDE EL LOG")
           context.setRestaurante({...context.restaurante, idRestaurante: response.data.usuario.restaurante, idSucursal: response.data.usuario.sucursal})
         }
 
@@ -113,6 +115,7 @@ export default function Login({ navigation, route }) {
         </View>
         <Input
           placeholder="Email"
+          autoCompleteType='email'
           leftIcon={
             <Icon type="font-awesome" name="envelope" size={20} color="grey" />
           }
@@ -123,6 +126,8 @@ export default function Login({ navigation, route }) {
 
         <Input
           placeholder="Password"
+          autoCompleteType='password'
+          secureTextEntry={true}
           leftIcon={
             <Icon type="font-awesome" name="lock" size={30} color="grey" />
           }

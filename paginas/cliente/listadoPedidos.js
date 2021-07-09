@@ -3,18 +3,20 @@ import { StyleSheet, SafeAreaView, ScrollView, Text, View } from "react-native";
 import Pedidos from "../pedido";
 import { SearchBar } from "react-native-elements";
 import GlobalContext from "../../components/global/context";
-import axios from "axios";
 
-export default function ListadoPedidos({ navigation }) {
-    const context = useContext(GlobalContext);
+
+export default function Index({ navigation }) {
+  const context = useContext(GlobalContext);
+  console.log("LISTADO PEDIDOS:", navigation);
+
+  function filtroRol(pedido){
+    return pedido.cliente == context.user._id
+  }
 
   useEffect(() => {
     navigation.setOptions({ title: `${context.user.rol} - Listado Pedidos`});
   }, );
 
-  function filtroRol(pedido){
-    return pedido.restaurante == context.restaurante.idRestaurante && pedido.sucursal == context.restaurante.idSucursal && context.user.mesas.includes(pedido.mesa)
-  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -22,7 +24,7 @@ export default function ListadoPedidos({ navigation }) {
         <Pedidos navigation={navigation} filtroRol={filtroRol} />
       </ScrollView>
     </SafeAreaView>
-  );  
+  );
 }
 
 const styles = StyleSheet.create({
@@ -30,4 +32,3 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-

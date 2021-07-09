@@ -6,7 +6,7 @@ import axios from "axios";
 import GlobalContext from "../../components/global/context";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Home() {
+export default function Home({navigation}) {
   const [user, setUser] = useState({});
   const context = useContext(GlobalContext);
   
@@ -53,12 +53,12 @@ async function getDatos(){
               <Text>{user.rol}</Text>
             </View>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.realizarPedidoBtn}
-              onPress={() => console.log("apretado")}
+              onPress={() => navigation.push()}
             >
               <Text style={styles.realizarPedidoTitle}>Ver pedidos</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </ScrollView>
       }

@@ -11,14 +11,17 @@ import {
 import { Input } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import axios from "axios";
+import GlobalContext from "../../components/global/context";
 
 export default function IngresarMesa({ navigation }) {
   const [ingresoHabilitado, setIngresoHabilitado] = useState(false);
   const [restaurantes, setRestaurantes] = useState("");
   const [restaurante, setRestaurante] = useState(restaurantes[0]);
   const [sucursal, setSucursal] = useState("");
-  const [mesa, setMesa] = useState("");
+  const [mesa, setMesa] = useState(-1);
 
+
+  const context = useContext(GlobalContext);
   useEffect(() => {
     buscarRestaurantes();
   }, []);
@@ -61,7 +64,7 @@ export default function IngresarMesa({ navigation }) {
   function sucursalesDisponibles() {
     return (
       <Picker        
-        onValueChange={(sucursalSeleccionada, itemIndex) => actualizarSucursal(sucursalSeleccionada)
+        onValueChange={(sucursalSeleccionada, itemIndex) => actualizarSucursal(parseInt(sucursalSeleccionada))
         }
         selectedValue={sucursal}
         style={{ width: 200 }}
@@ -79,7 +82,7 @@ export default function IngresarMesa({ navigation }) {
   function mesasDisponibles() {
     return (
       <Picker
-        onValueChange={(mesaSeleccionada, itemIndex) => setMesa(mesaSeleccionada)}
+        onValueChange={(mesaSeleccionada, itemIndex) => setMesa(parseInt(mesaSeleccionada))}
         selectedValue={mesa}
         style={{ width: 200 }}
       >
@@ -96,12 +99,17 @@ export default function IngresarMesa({ navigation }) {
   function actualizarRestaurante(nuevoRestaurante){
     setRestaurante(nuevoRestaurante);
     setSucursal(restaurantes.find(r => r._id == nuevoRestaurante).sucursales[0]._id);
-    setMesa(restaurantes.find(r => r._id == nuevoRestaurante).sucursales.find(s => s._id == sucursal).mesas[0]);
+    setMesa(restaurantes.find(r => r._id == nuevoRestaurante).sucursales.find(s => s._id == sucursal).mesas[0]._id);
   }
 
   function actualizarSucursal(nuevaSucursal){
     setSucursal(nuevaSucursal);
-    setMesa(restaurantes.find(r => r._id == restaurante).sucursales.find(s => s._id == nuevaSucursal).mesas[0]);
+    setMesa(restaurantes.find(r => r._id == restaurante).sucursales.find(s => s._id == nuevaSucursal).mesas[0]._id);
+  }
+
+  function setearRestaurante(){
+    context.setRestaurante({idRestaurante: restaurante, idSucursal: sucursal, mesa: mesa})
+    navigation.navigate("Cliente")
   }
 
   return (
@@ -120,13 +128,13 @@ export default function IngresarMesa({ navigation }) {
         </View>
         
         <View style={styles.pedidosCard}>
-          <Text style={styles.pedidoLabel}>Sucursal:</Text>
+          <Text style={styles.pedidoLabel}>Mesas:</Text>
           {mesasDisponibles()}
         </View>
 
         <TouchableOpacity
           style={styles.irAMenuBtn}
-          onPress={() => navigation.navigate("Cliente", {restaurante: restaurante, sucursal: sucursal, mesa: mesa})}
+          onPress={() => setearRestaurante()}
         >
           <Text style={styles.irAMenuTitle}>Ir a Menu</Text>
         </TouchableOpacity>

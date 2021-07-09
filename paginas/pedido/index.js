@@ -25,7 +25,7 @@ function badgeStatus(pedido) {
 }
 
 export default function ListaPedidos({ navigation, filtroRol }) {
-  console.log("NAVIGATION PEDIDOS:", navigation);
+  //console.log("NAVIGATION PEDIDOS:", navigation);
 
   const context = useContext(GlobalContext);
   const [pedidos, setPedidos] = useState([]);

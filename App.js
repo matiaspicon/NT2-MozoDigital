@@ -27,6 +27,7 @@ export default function App() {
   const [carritoItems, setCarritoItems] = useState([]);
 
   const [user, setUser] = useState({
+    _id: "",
     nombre: "",
     mail: "",
     rol: "",
@@ -37,7 +38,7 @@ export default function App() {
   const [restaurante, setRestaurante] = useState({
     idRestaurante: "60da2ed8a6201c21d533e75e",
     idSucursal: 0,
-    mesa: -1,
+    mesa: 1,
   });
 
   return (

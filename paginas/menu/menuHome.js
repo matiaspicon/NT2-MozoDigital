@@ -22,7 +22,7 @@ export default function Index({ navigation }) {
 
   const context = useContext(GlobalContext);
 
-  console.log("NAVIGATION INDEX:", navigation);
+  //console.log("NAVIGATION INDEX:", navigation);
 
   async function buscaMenu() {
     if (context.user.rol != "Encargado") {

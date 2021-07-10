@@ -26,9 +26,8 @@ export default function DetallePlato({ navigation, route }) {
   const context = useContext(GlobalContext);
   let items = route.params.pedido.menuItems;
 
-  const [nuevoEstado, setNuevoEstado] = useState(estado);
-
-  //console.log("items:", items);
+  const [nuevoEstado, setNuevoEstado] = useState(route.params.pedido.estado == "Listo" ? "Entregado" : estado);
+  const [entregado, setEntregado] = useState(route.params.pedido.estado == "Entregado" ? true : false);
 
   useEffect(() => {
     navigation.setOptions({ title: `${context.user.rol} - Detalles Pedido` });
@@ -151,10 +150,10 @@ export default function DetallePlato({ navigation, route }) {
           </TouchableOpacity>
         )}
 
-        {(context.user.rol == "Mozo" && nuevoEstado == "Listo") && (
+        {(context.user.rol == "Mozo" && nuevoEstado == "Entregado" && !entregado) && (
           <TouchableOpacity
             style={styles.realizarPedidoBtn}
-            onPress={() => modificarEstado()}
+            onPress={modificarEstado}
           >
             <Text style={styles.realizarPedidoTitle}>Marcar como Entregado</Text>
           </TouchableOpacity>

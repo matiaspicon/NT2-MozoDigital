@@ -21,7 +21,7 @@ export default function Empleados({ navigation }) {
             setUsuarios(
               response.data.filter((usuario) =>
                 (usuario.nombre.toLowerCase().includes(filtro.toLowerCase()) || usuario.email.toLowerCase().includes(filtro.toLowerCase()))
-                 && usuario.rol != "Cliente"
+                 && usuario.rol != "Cliente" && usuario.restaurante == context.restaurante.idRestaurante && usuario.sucursal == context.restaurante.idSucursal
               )
             );
           })

@@ -71,7 +71,8 @@ export default function AgregarCliente({ navigation, route }) {
 
                         <Text>Password: </Text>
                         <TextInput style={styles.descripcion}
-                            onChangeText={setPassword} />
+                            onChangeText={setPassword}
+                            secureTextEntry={true} />
 
                         <Text>{'\n'}</Text>
 

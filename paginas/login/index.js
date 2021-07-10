@@ -56,6 +56,7 @@ export default function Login({ navigation, route }) {
         }
 
         context.setUser({
+          _id: response.data.usuario._id,
           nombre: response.data.usuario.nombre,
           mail: response.data.usuario.email,
           rol: response.data.usuario.rol,
@@ -123,6 +124,8 @@ export default function Login({ navigation, route }) {
 
         <Input
           placeholder="Password"
+          autoCompleteType='password'
+          secureTextEntry={true}
           leftIcon={
             <Icon type="font-awesome" name="lock" size={30} color="grey" />
           }

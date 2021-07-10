@@ -33,6 +33,9 @@ async function getDatos(){
       {user && 
         <ScrollView style={{ flex: 1, flexDirection: "column" }}>
           <View style={styles.pedidosContainer}>
+          <View style={styles.pedidosCard}>
+              <Text style={styles.misDatos}>Mis Datos </Text>              
+            </View>
             <View style={styles.pedidosCard}>
               <Text style={styles.pedidoLabel}>Nombre: </Text>
               <Text> {user.nombre}</Text>
@@ -106,4 +109,8 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 16,
   },
+  misDatos:{
+    fontSize: 20,
+    fontWeight: "bold",
+  }
 });

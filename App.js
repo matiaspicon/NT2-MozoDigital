@@ -36,9 +36,9 @@ export default function App() {
   });
 
   const [restaurante, setRestaurante] = useState({
-    idRestaurante: "60da2ed8a6201c21d533e75e",
-    idSucursal: 0,
-    mesa: 1,
+    idRestaurante: "",
+    idSucursal: "",
+    mesa: -1,
   });
 
   return (

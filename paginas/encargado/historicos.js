@@ -11,7 +11,7 @@ export default function Index({ navigation }) {
   const context = useContext(GlobalContext);
    const [filtro, setFiltro] = useState("")
   function filtroRol(pedido) {
-    return pedido.restaurante == context.restaurante.idRestaurante && pedido.sucursal == context.restaurante.idSucursal || (filtro && pedido.titulo.toLowerCase() == filtro.toLowerCase())
+    return pedido.restaurante == context.restaurante.idRestaurante && pedido.sucursal == context.restaurante.idSucursal && pedido.estado == "Entregado"
   }
 
   return (

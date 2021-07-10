@@ -74,6 +74,9 @@ export default function DetallePlato({ navigation, route }) {
       );
     }
     if (context.user.rol == "Cocinero") {
+      if (nuevoEstado == "Pedido") {
+        setNuevoEstado("En preparacion");
+      }
       return (
         <Picker
           onValueChange={(nuevoEstado, itemIndex) =>
@@ -87,21 +90,8 @@ export default function DetallePlato({ navigation, route }) {
         </Picker>
       );
     }
-    if (context.user.rol == "Mozo") {
-      return (
-        <Picker
-          onValueChange={(nuevoEstado, itemIndex) =>
-            setNuevoEstado(nuevoEstado)
-          }
-          selectedValue={nuevoEstado}
-          style={{ width: 200 }}
-        >
-          <Picker.Item label="Listo" value="Listo" />
-          <Picker.Item label="Entregado" value="Entregado" />
-        </Picker>
-      );
-    }
-    if (context.user.rol == "Cliente") {
+
+    if (context.user.rol == "Cliente" || context.user.rol == "Mozo") {
       return <Text>{estado}</Text>;
     }
   }
@@ -152,12 +142,21 @@ export default function DetallePlato({ navigation, route }) {
           <Text style={styles.pedidoLabel}>Total: ${total} </Text>
         </View>
 
-        {context.user.rol != "Cliente" && (
+        {(context.user.rol != "Cliente" && context.user.rol != "Mozo") && (
           <TouchableOpacity
             style={styles.realizarPedidoBtn}
             onPress={modificarEstado}
           >
             <Text style={styles.realizarPedidoTitle}>Modificar Estado</Text>
+          </TouchableOpacity>
+        )}
+
+        {(context.user.rol == "Mozo" && nuevoEstado == "Listo") && (
+          <TouchableOpacity
+            style={styles.realizarPedidoBtn}
+            onPress={() => modificarEstado()}
+          >
+            <Text style={styles.realizarPedidoTitle}>Marcar como Entregado</Text>
           </TouchableOpacity>
         )}
       </View>

@@ -47,14 +47,11 @@ async function getDatos(){
             </View>
 
             <View style={styles.pedidosCard}>
-              <Text style={styles.pedidoLabel}>EMail:</Text>
+              <Text style={styles.pedidoLabel}>Email:</Text>
               <Text>{user.email}</Text>
             </View>
-
-            <View style={styles.pedidosCard}>
-              <Text style={styles.pedidoLabel}>Rol:</Text>
-              <Text>{user.rol}</Text>
-            </View>
+            
+            <Text>{'\n'}</Text>
 
             {/* <TouchableOpacity
               style={styles.realizarPedidoBtn}

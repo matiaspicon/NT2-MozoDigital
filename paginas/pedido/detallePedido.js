@@ -21,7 +21,7 @@ import axios from "axios";
 
 export default function DetallePlato({ navigation, route }) {
   //console.log("ROUTE PEDIDO DETALLE:", route);
-  const { _id, fecha, cliente, estado, total, mesa } = route.params.pedido;
+  const { _id, fecha, cliente, estado, total, restaurante, sucursal, mesa } = route.params.pedido;
   const buscarPedidos = route.params.buscarPedidos;
   const context = useContext(GlobalContext);
   let items = route.params.pedido.menuItems;
@@ -106,6 +106,16 @@ export default function DetallePlato({ navigation, route }) {
         <View style={styles.pedidosCard}>
           <Text style={styles.pedidoLabel}>Fecha: </Text>
           <Text> {fecha}</Text>
+        </View>
+
+        <View style={styles.pedidosCard}>
+          <Text style={styles.pedidoLabel}>Restaurante: </Text>
+          <Text> {restaurante}</Text>
+        </View>
+
+        <View style={styles.pedidosCard}>
+          <Text style={styles.pedidoLabel}>Sucursal: </Text>
+          <Text> {sucursal}</Text>
         </View>
 
         <View style={styles.pedidosCard}>

@@ -26,7 +26,7 @@ function badgeStatus(pedido) {
 
 export default function ListaPedidos({ navigation, filtroRol }) {
   //console.log("NAVIGATION PEDIDOS:", navigation);
-
+  let timeOut;
   const context = useContext(GlobalContext);
   const [pedidos, setPedidos] = useState([]);
 
@@ -43,18 +43,17 @@ export default function ListaPedidos({ navigation, filtroRol }) {
   useFocusEffect(
     React.useCallback(() => {
       buscarPedidos()   
-      const timeOut = setTimeout(() => {
-        buscarPedidos();
-      }, 1000);
       return () => {
         clearTimeout(timeOut)
       };
     }, [])
   );
-
+  
+  let i = 0;
   function buscarPedidos() {
-    let i = 0;
-    console.log("BUSCO PEDIDOS 1", i++);
+    
+    console.log("BUSCO PEDIDOS 1", i);
+    i++;
     axios
       .get("https://gentle-hamlet-44521.herokuapp.com/api/pedidos", {
         headers: { Authorization: `Bearer ${context.user.token}` },
@@ -70,11 +69,10 @@ export default function ListaPedidos({ navigation, filtroRol }) {
       .catch((error) => {
         console.log(error.response);
       });
+      timeOut = setTimeout(() => {
+        buscarPedidos();
+      }, 10000)
   }
-
-  useEffect(() => {
-    buscarPedidos();
-  }, []);
 
   return (
     <SafeAreaView>

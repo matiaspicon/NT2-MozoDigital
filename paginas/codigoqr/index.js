@@ -47,10 +47,10 @@ export default function App({navigation}) {
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
-      <Button
+      {/* <Button
         title={"Ingresar manualmente"}
         onPress={() => navigation.push("IngresarMesa")}
-      />
+      /> */}
       {scanned && (
         <View>
           <Button

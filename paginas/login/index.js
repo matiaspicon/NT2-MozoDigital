@@ -32,10 +32,10 @@ export default function Login({ navigation, route }) {
         //email: "cocinero@mozodigital.com", //email HARDCODEADO
         //email: "mozo@mozodigital.com", //email HARDCODEADO
         //email: "cliente@mozodigital.com", //email HARDCODEADO
-        password: "1234", //password HARDCODEADO
+        //password: "1234", //password HARDCODEADO
         //email: email+"@mozodigital.com",
-        //password: password
-        email: email,
+        password: password,
+        email: email.toLowerCase(),
       })
       .then((response) => {
         console.log(response);

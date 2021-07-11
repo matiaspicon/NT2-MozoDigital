@@ -109,8 +109,6 @@ export default function AgregarEmpleado({ navigation, route }) {
                 <View style={styles.empleadoDetallesContainer}>
                     <View style={styles.empleadoDetails}>
                         <View styles={styles.detalle}>
-                            <Text>Email: </Text>
-                            <TextInput style={styles.descripcion} onChangeText={setEmail} />
 
                             <Text>Nombre: </Text>
                             <TextInput style={styles.descripcion} onChangeText={setNombre} />
@@ -120,6 +118,9 @@ export default function AgregarEmpleado({ navigation, route }) {
                                 style={styles.descripcion}
                                 onChangeText={setApellido}
                             />
+                            
+                            <Text>Email: </Text>
+                            <TextInput style={styles.descripcion} onChangeText={setEmail} />
 
                             <Text>Password: </Text>
                             <TextInput

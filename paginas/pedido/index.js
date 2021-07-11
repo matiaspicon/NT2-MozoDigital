@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Badge } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
-import DetallesPedido from "./detallePedido";
+import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import GlobalContext from "../../components/global/context";
 
@@ -30,7 +30,7 @@ export default function ListaPedidos({ navigation, filtroRol }) {
   const context = useContext(GlobalContext);
   const [pedidos, setPedidos] = useState([]);
 
-  console.log("ACA LOS DATOS DEL CONTEXT",context);
+  console.log("CONTEXT",context);
 
   function devolverTotal(pedido) {
     let total = 0;
@@ -39,6 +39,18 @@ export default function ListaPedidos({ navigation, filtroRol }) {
     });
     return total.toLocaleString("de-DE");
   }
+
+  useFocusEffect(
+    React.useCallback(() => {
+      buscarPedidos()   
+      const timeOut = setTimeout(() => {
+        buscarPedidos();
+      }, 1000);
+      return () => {
+        clearTimeout(timeOut)
+      };
+    }, [])
+  );
 
   function buscarPedidos() {
     let i = 0;
@@ -49,14 +61,11 @@ export default function ListaPedidos({ navigation, filtroRol }) {
       })
       .then((response) => {
         console.log("ACA LA RESPUESTA", response);
-
         setPedidos(
           response.data.filter(filtroRol).map((pedido) => {pedido.total = devolverTotal(pedido);
           return pedido;
           })
         );
-
-        console.log(pedidos);
       })
       .catch((error) => {
         console.log(error.response);
@@ -65,26 +74,10 @@ export default function ListaPedidos({ navigation, filtroRol }) {
 
   useEffect(() => {
     buscarPedidos();
-    setInterval(buscarPedidos, 10000);
   }, []);
-
-  // useEffect(() => {
-  //   buscarPedidos();
-  // }, [filtro]);
-
-  const cambiaFiltro = (filtro) => {
-    setFiltro(filtro);
-  };
 
   return (
     <SafeAreaView>
-      {/* <SearchBar
-        placeholder="Buscar"
-        onChangeText={(text) => cambiaFiltro(text)}
-        value={filtro}
-        round="true"
-      /> */}
-
       <View style={styles.container}>
         {pedidos &&
           pedidos.sort(function (a, b) {

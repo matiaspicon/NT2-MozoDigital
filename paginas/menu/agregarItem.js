@@ -143,7 +143,7 @@ export default function AgregarItem({ navigation, route }) {
           console.log(error.response);
         });
 
-      navigation.navigate("Menu");
+      navigation.navigate("Home");
     }
   }
 }

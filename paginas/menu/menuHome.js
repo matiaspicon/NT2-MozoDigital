@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext,  } from "react";
 import {
   View,
   TouchableOpacity,
@@ -11,7 +11,6 @@ import {
   SafeAreaView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { SearchBar } from "react-native-elements";
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import GlobalContext from "../../components/global/context";
@@ -54,18 +53,13 @@ export default function Index({ navigation }) {
     }
   }
 
-
   useFocusEffect(
-    React.useCallback(() => {
-      // Do something when the screen is focused.
-      //alert('Home Screen was focused');
-      console.log("LA PANTALLA ESTA FOCUSED");
-      setTimeout(() => {
+    React.useCallback(() => {      
+      const timeOut = setTimeout(() => {
         buscaMenu();
       }, 1000);
       return () => {
-        // Do something when the screen is unfocused
-        //alert('Home Screen was unfocused');
+        clearTimeout(timeOut)
       };
     }, [])
   );
@@ -92,9 +86,7 @@ export default function Index({ navigation }) {
                     plato.categoria != "Bebidas" && plato.categoria != "Postres"
                 ),
                 categoria: "Platos",
-                buscaMenu
-
-              })
+                "buscaMenu": buscaMenu})
             }
           >
             <View

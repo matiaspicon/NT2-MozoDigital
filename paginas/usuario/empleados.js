@@ -34,16 +34,16 @@ export default function Empleados({ navigation }) {
     buscaUsuarios();
   }, [filtro]);
 
-  useFocusEffect(
+
+
+ useFocusEffect(
     React.useCallback(() => {
-      // Do something when the screen is focused.
-      //alert('Home Screen was focused');
-      setTimeout(() => {
+      buscaUsuarios();  
+      const timeOut = setTimeout(() => {
         buscaUsuarios();
       }, 1000);
       return () => {
-     // Do something when the screen is unfocused
-     //alert('Home Screen was unfocused');
+        clearTimeout(timeOut)
       };
     }, [])
   );

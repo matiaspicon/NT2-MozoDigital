@@ -137,8 +137,9 @@ export default function Carrito({ navigation, route }) {
     closeRow(rowMap, rowKey);
     const newData = [...context.carritoItems];
     const prevIndex = context.carritoItems.findIndex(
-      (item) => item.key === rowKey
+      (item) => item._id === rowKey
     );
+    
     newData.splice(prevIndex, 1);
     context.setCarritoItems(newData);
   };
@@ -148,8 +149,8 @@ export default function Carrito({ navigation, route }) {
       <HiddenItemWithActions
         data={data}
         rowMap={rowMap}
-        onClose={() => closeRow(rowMap, data.item.key)}
-        onDelete={() => deleteRow(rowMap, data.item.key)}
+        onClose={() => closeRow(rowMap, data.item._id)}
+        onDelete={() => deleteRow(rowMap, data.item._id)}
       />
     );
   };
